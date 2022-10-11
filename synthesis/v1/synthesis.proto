@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package smartspeech.synthesis.v1;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/sberdevices/smartspeech/synthesis/v1;synthesis";
+option java_package = "ru.sberdevices.smartspeech.synthesis.v1";
+
+service SmartSpeech {
+  rpc Synthesize (SynthesisRequest) returns (stream SynthesisResponse) {
+  }
+}
+
+message SynthesisRequest {
+  enum AudioEncoding {
+    AUDIO_ENCODING_UNSPECIFIED = 0;
+    PCM_S16LE = 1; // 16-bit signed little-endian (Linear PCM)
+    OPUS = 2; // mime audio/ogg; codecs=opus
+    WAV = 3; // mime audio/x-wav with 16-bit signed little-endian (Linear PCM)
+  }
+
+  enum ContentType {
+    TEXT = 0;
+    SSML = 1;
+  }
+
+  string text = 1;
+  AudioEncoding audio_encoding = 2;
+  string language = 3;
+  ContentType content_type = 4;
+  string voice = 5;
+}
+
+message SynthesisResponse {
+  bytes data = 1; // chunk of audio data
+  google.protobuf.Duration audio_duration = 2; // time from start of audio so far
+}

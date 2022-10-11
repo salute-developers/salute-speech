@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package smartspeech.recognition.v1;
+
+import "task.proto";
+
+import "google/protobuf/duration.proto";
+
+option go_package = "./;protocol";
+option java_package = "TODO";
+
+service SmartSpeech {
+  rpc Recognize (stream RecognitionRequest) returns (stream RecognitionResponse);
+
+  rpc AsyncRecognize (AsyncRecognizeRequest) returns (smartspeech.task.v1.Task);
+}
+
+message RecognitionRequest {
+  oneof request {
+    RecognitionOptions options = 1;
+    bytes audio_chunk = 2;
+  }
+}
+
+message RecognitionResponse {
+  repeated Hypothesis results = 1;
+  bool eou = 2;  // marks final result for this utterance
+  Emotions emotions_result = 3;  // may be set on end of utterance
+  google.protobuf.Duration processed_audio_start = 4;  // starting position of processed audio
+  google.protobuf.Duration processed_audio_end = 5;  // ending position of processed audio
+  BackendInfo backend_info = 6;
+  int32 channel = 7;
+  SpeakerInfo speaker_info = 8;
+}
+
+message AsyncRecognizeRequest {
+  RecognitionOptions options = 1;
+  string request_file_id = 2;
+}
+
+message RecognitionOptions {
+  enum AudioEncoding {
+    AUDIO_ENCODING_UNSPECIFIED = 0;
+    PCM_S16LE = 1;  // 16-bit signed little-endian (Linear PCM)
+    OPUS = 2;  // mime audio/ogg; codecs=opus
+    MP3 = 3;  // MPEG-1/2 Layer-3
+    FLAC = 4;
+    ALAW = 5;
+    MULAW = 6;
+  }
+
+  AudioEncoding audio_encoding = 1;
+  int32 sample_rate = 2;  // For PCM_16LE, ALAW, MULAW audio encodings
+  string language = 3;  // Language code in RFC-3066 format, i.e.: ru-RU
+  string model = 4;
+  int32 hypotheses_count = 5;
+  Hints hints = 6;
+  bool enable_profanity_filter = 7;
+  bool enable_multi_utterance = 8;
+  bool enable_partial_results = 9;
+  google.protobuf.Duration no_speech_timeout = 10;
+  google.protobuf.Duration max_speech_timeout = 11;
+  int32 channels_count = 12;
+  SpeakerSeparationOptions speaker_separation_options = 13;
+  repeated string insight_models = 14; // Only for asynchronous requests
+}
+
+message Hints {
+  repeated string words = 1;
+  bool enable_letters = 2;
+  google.protobuf.Duration eou_timeout = 3;
+}
+
+message SpeakerSeparationOptions {
+  bool enable = 1;
+  bool enable_only_main_speaker = 2;  // return only main speaker
+  int32 count = 3;  // number of expected speakers
+}
+
+message Hypothesis {
+  message WordAlignment {
+    string word = 1;  // single word
+    google.protobuf.Duration start = 2;  // starting position of the word in audio stream
+    google.protobuf.Duration end = 3;  // ending position of the word in audio stream
+  }
+
+  string text = 1;  // non-normalized text result
+  string normalized_text = 2;  // normalized text result
+  google.protobuf.Duration start = 3;  // hypothesis starting position from current utterance start
+  google.protobuf.Duration end = 4;  // hypothesis final position from current utterance start
+  repeated WordAlignment word_alignments = 5;  // alignments of single words in audio stream
+}
+
+message Emotions {
+  float positive = 1;  // confidence [0.0 - 1.0]
+  float neutral = 2;
+  float negative = 3;
+}
+
+message BackendInfo {
+  string model_name = 1;
+  string model_version = 2;
+  string server_version = 3;
+}
+
+message SpeakerInfo {
+  int32 speaker_id = 1;
+  float main_speaker_confidence = 2;  // main speaker feature [0.0 - 1.0]
+}

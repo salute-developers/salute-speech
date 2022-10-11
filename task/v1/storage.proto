@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package smartspeech.storage.v1;
+
+option go_package = "github.com/sberdevices/smartspeech/storage/v1;storage";
+option java_package = "ru.sberdevices.smartspeech.recognition.v1";
+
+service SmartSpeech {
+  rpc Upload(stream UploadRequest) returns (UploadResponse) {}
+  rpc Download(DownloadRequest) returns (stream DownloadResponse) {}
+}
+
+message UploadRequest {
+  bytes file_chunk = 1;
+}
+
+message UploadResponse {
+  string request_file_id = 1;
+}
+
+message DownloadRequest {
+  string response_file_id = 1;
+}
+
+message DownloadResponse {
+  bytes file_chunk = 1;
+}

@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package smartspeech.task.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/sberdevices/smartspeech/task/v1;task";
+option java_package = "ru.sberdevices.smartspeech.task.v1";
+
+service SmartSpeech {
+  rpc GetTask (GetTaskRequest) returns (Task);
+
+  rpc CancelTask (CancelTaskRequest) returns (Task);
+}
+
+message GetTaskRequest {
+  string task_id = 1;
+}
+
+message CancelTaskRequest {
+  string task_id = 1;
+}
+
+message Task {
+  enum Status {
+    UNDEFINED = 0;
+    NEW = 1;
+    RUNNING = 2;
+    CANCELED = 3;
+    DONE = 4;
+    ERROR = 5;
+  }
+
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+  Status status = 4; // If DONE check result.response_file_id, if ERROR check result.error
+  oneof result {
+    string error = 5;
+    string response_file_id = 6;
+  }
+}
