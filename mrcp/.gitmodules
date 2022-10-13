@@ -1,0 +1,3 @@
+[submodule "contrib/unimrcp"]
+	path = contrib/unimrcp
+	url = https://github.com/unispeech/unimrcp.git

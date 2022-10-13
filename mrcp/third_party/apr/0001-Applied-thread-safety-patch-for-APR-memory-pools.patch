@@ -1,0 +1,394 @@
+From 2e81b3af85db760141430752c5780e000cddb70b Mon Sep 17 00:00:00 2001
+From: Arsen Chaloyan <achaloyan@gmail.com>
+Date: Tue, 21 Jul 2015 16:03:43 -0700
+Subject: [PATCH 1/6] Applied thread-safety patch for APR memory pools.
+
+* Added a new APR feature macro APR_HAS_THREADSAFE_POOLS.
+---
+ include/apr.h.in        | 10 +++++
+ include/apr.hnw         | 10 +++++
+ include/apr.hw          | 10 +++++
+ include/apr.hwc         | 10 +++++
+ include/apr_pools.h     | 11 ++++++
+ memory/unix/apr_pools.c | 97 +++++++++++++++++++++++++++++++++++++++++++++----
+ 6 files changed, 141 insertions(+), 7 deletions(-)
+
+diff --git a/include/apr.h.in b/include/apr.h.in
+index 0ad7a91..117395a 100644
+--- include/apr.h.in
++++ include/apr.h.in
+@@ -282,6 +282,16 @@ extern "C" {
+ 
+ #define APR_PROCATTR_USER_SET_REQUIRES_PASSWORD @apr_procattr_user_set_requires_password@
+ 
++/* Start of APR feature macros added by/for UniMRCP. */
++
++/*
++ * This definition indicates support for thread-safe operations 
++ * on APR memory pools. [Mandatory]
++ */
++#define APR_HAS_THREADSAFE_POOLS  APR_HAS_THREADS
++
++/* End of APR feature macros added by/for UniMRCP. */
++
+ /* APR sets APR_FILES_AS_SOCKETS to 1 on systems where it is possible
+  * to poll on files/pipes.
+  */
+diff --git a/include/apr.hnw b/include/apr.hnw
+index d0c77e0..fba59bd 100644
+--- include/apr.hnw
++++ include/apr.hnw
+@@ -216,6 +216,16 @@ extern "C" {
+ 
+ #define APR_PROCATTR_USER_SET_REQUIRES_PASSWORD 0
+ 
++/* Start of APR feature macros added by/for UniMRCP. */
++
++/*
++ * This definition indicates support for thread-safe operations 
++ * on APR memory pools. [Mandatory]
++ */
++#define APR_HAS_THREADSAFE_POOLS  APR_HAS_THREADS
++
++/* End of APR feature macros added by/for UniMRCP. */
++
+ /* Netware can poll on files/pipes.
+  */
+ #define APR_FILES_AS_SOCKETS            1
+diff --git a/include/apr.hw b/include/apr.hw
+index a75bc60..ae608b1 100644
+--- include/apr.hw
++++ include/apr.hw
+@@ -334,6 +334,16 @@ extern "C" {
+ #define APR_PROCATTR_USER_SET_REQUIRES_PASSWORD 0
+ #endif
+ 
++/* Start of APR feature macros added by/for UniMRCP. */
++
++/*
++ * This definition indicates support for thread-safe operations 
++ * on APR memory pools. [Mandatory]
++ */
++#define APR_HAS_THREADSAFE_POOLS  APR_HAS_THREADS
++
++/* End of APR feature macros added by/for UniMRCP. */
++
+ /* APR sets APR_FILES_AS_SOCKETS to 1 on systems where it is possible
+  * to poll on files/pipes.
+  */
+diff --git include/apr.hwc include/apr.hwc
+index 0579962..b3fa796 100644
+--- include/apr.hwc
++++ include/apr.hwc
+@@ -331,6 +331,16 @@ extern "C" {
+ #define APR_PROCATTR_USER_SET_REQUIRES_PASSWORD 0
+ #endif
+ 
++/* Start of APR feature macros added by/for UniMRCP. */
++
++/*
++ * This definition indicates support for thread-safe operations 
++ * on APR memory pools. [Mandatory]
++ */
++#define APR_HAS_THREADSAFE_POOLS  APR_HAS_THREADS
++
++/* End of APR feature macros added by/for UniMRCP. */
++
+ /* APR sets APR_FILES_AS_SOCKETS to 1 on systems where it is possible
+  * to poll on files/pipes.
+  */
+diff --git a/include/apr_pools.h b/include/apr_pools.h
+index 783c9c4..4a610fa 100644
+--- include/apr_pools.h
++++ include/apr_pools.h
+@@ -536,6 +536,17 @@ APR_DECLARE(int) apr_pool_is_ancestor(apr_pool_t *a, apr_pool_t *b);
+ APR_DECLARE(void) apr_pool_tag(apr_pool_t *pool, const char *tag)
+                   __attribute__((nonnull(1)));
+ 
++#if APR_HAS_THREADSAFE_POOLS
++/**
++ * Add a mutex to a pool to make it suitable to use from multiple threads.
++ * @param pool The pool to add the mutex to
++ * @param mutex The mutex
++ * @remark The mutex does not protect the destroy operation just the low level allocs.
++ */
++APR_DECLARE(void) apr_pool_mutex_set(apr_pool_t *pool,
++                                     apr_thread_mutex_t *mutex)
++                  __attribute__((nonnull(1)));
++#endif
+ 
+ /*
+  * User data management
+diff --git a/memory/unix/apr_pools.c b/memory/unix/apr_pools.c
+index 20e4254..816643e 100644
+--- memory/unix/apr_pools.c
++++ memory/unix/apr_pools.c
+@@ -509,6 +509,9 @@ struct apr_pool_t {
+     apr_abortfunc_t       abort_fn;
+     apr_hash_t           *user_data;
+     const char           *tag;
++#if APR_HAS_THREADSAFE_POOLS
++    apr_thread_mutex_t   *user_mutex;
++#endif
+ 
+ #if !APR_POOL_DEBUG
+     apr_memnode_t        *active;
+@@ -671,12 +674,17 @@ APR_DECLARE(void *) apr_palloc(apr_pool_t *pool, apr_size_t in_size)
+     void *mem;
+     apr_size_t size, free_index;
+ 
++#if APR_HAS_THREADSAFE_POOLS
++    if (pool->user_mutex) apr_thread_mutex_lock(pool->user_mutex);
++#endif
++
+     size = APR_ALIGN_DEFAULT(in_size);
+     if (size < in_size) {
+         if (pool->abort_fn)
+             pool->abort_fn(APR_ENOMEM);
+ 
+-        return NULL;
++        mem = NULL;
++        goto end;
+     }
+     active = pool->active;
+ 
+@@ -685,7 +693,7 @@ APR_DECLARE(void *) apr_palloc(apr_pool_t *pool, apr_size_t in_size)
+         mem = active->first_avail;
+         active->first_avail += size;
+ 
+-        return mem;
++        goto end;
+     }
+ 
+     node = active->next;
+@@ -697,7 +705,8 @@ APR_DECLARE(void *) apr_palloc(apr_pool_t *pool, apr_size_t in_size)
+             if (pool->abort_fn)
+                 pool->abort_fn(APR_ENOMEM);
+ 
+-            return NULL;
++            mem = NULL;
++            goto end;
+         }
+     }
+ 
+@@ -716,7 +725,7 @@ APR_DECLARE(void *) apr_palloc(apr_pool_t *pool, apr_size_t in_size)
+     active->free_index = (APR_UINT32_TRUNC_CAST)free_index;
+     node = active->next;
+     if (free_index >= node->free_index)
+-        return mem;
++        goto end;
+ 
+     do {
+         node = node->next;
+@@ -726,6 +735,11 @@ APR_DECLARE(void *) apr_palloc(apr_pool_t *pool, apr_size_t in_size)
+     list_remove(active);
+     list_insert(active, node);
+ 
++end:
++#if APR_HAS_THREADSAFE_POOLS
++    if (pool->user_mutex) apr_thread_mutex_unlock(pool->user_mutex);
++#endif
++
+     return mem;
+ }
+ 
+@@ -758,6 +772,10 @@ APR_DECLARE(void) apr_pool_clear(apr_pool_t *pool)
+ {
+     apr_memnode_t *active;
+ 
++#if APR_HAS_THREADSAFE_POOLS
++    if (pool->user_mutex) apr_thread_mutex_lock(pool->user_mutex);
++#endif
++
+     /* Run pre destroy cleanups */
+     run_cleanups(&pool->pre_cleanups);
+     pool->pre_cleanups = NULL;
+@@ -787,14 +805,27 @@ APR_DECLARE(void) apr_pool_clear(apr_pool_t *pool)
+     active->first_avail = pool->self_first_avail;
+ 
+     if (active->next == active)
+-        return;
++        goto end;
+ 
+     *active->ref = NULL;
+     allocator_free(pool->allocator, active->next);
+     active->next = active;
+     active->ref = &active->next;
++
++end:
++#if APR_HAS_THREADSAFE_POOLS
++    if (pool->user_mutex) apr_thread_mutex_unlock(pool->user_mutex);
++#endif
+ }
+ 
++#if APR_HAS_THREADSAFE_POOLS
++APR_DECLARE(void) apr_pool_mutex_set(apr_pool_t *pool,
++                                     apr_thread_mutex_t *mutex)
++{
++    pool->user_mutex = mutex;
++}
++#endif
++
+ APR_DECLARE(void) apr_pool_destroy(apr_pool_t *pool)
+ {
+     apr_memnode_t *active;
+@@ -913,6 +944,10 @@ APR_DECLARE(apr_status_t) apr_pool_create_ex(apr_pool_t **newpool,
+     pool->user_data = NULL;
+     pool->tag = NULL;
+ 
++#if APR_HAS_THREADSAFE_POOLS
++    pool->user_mutex = NULL;
++#endif
++
+ #ifdef NETWARE
+     pool->owner_proc = (apr_os_proc_t)getnlmhandle();
+ #endif /* defined(NETWARE) */
+@@ -1005,6 +1040,10 @@ APR_DECLARE(apr_status_t) apr_pool_create_unmanaged_ex(apr_pool_t **newpool,
+     pool->sibling = NULL;
+     pool->ref = NULL;
+ 
++#if APR_HAS_THREADSAFE_POOLS
++    pool->user_mutex = NULL;
++#endif
++
+ #ifdef NETWARE
+     pool->owner_proc = (apr_os_proc_t)getnlmhandle();
+ #endif /* defined(NETWARE) */
+@@ -1122,6 +1161,10 @@ APR_DECLARE(char *) apr_pvsprintf(apr_pool_t *pool, const char *fmt, va_list ap)
+     apr_memnode_t *active, *node;
+     apr_size_t free_index;
+ 
++#if APR_HAS_THREADSAFE_POOLS
++    if (pool->user_mutex) apr_thread_mutex_lock(pool->user_mutex);
++#endif
++
+     ps.node = active = pool->active;
+     ps.pool = pool;
+     ps.vbuff.curpos  = ps.node->first_avail;
+@@ -1157,7 +1200,7 @@ APR_DECLARE(char *) apr_pvsprintf(apr_pool_t *pool, const char *fmt, va_list ap)
+      * Link the node in if it's a new one
+      */
+     if (!ps.got_a_new_node)
+-        return strp;
++        goto end;
+ 
+     active = pool->active;
+     node = ps.node;
+@@ -1175,7 +1218,7 @@ APR_DECLARE(char *) apr_pvsprintf(apr_pool_t *pool, const char *fmt, va_list ap)
+     node = active->next;
+ 
+     if (free_index >= node->free_index)
+-        return strp;
++        goto end;
+ 
+     do {
+         node = node->next;
+@@ -1185,9 +1228,18 @@ APR_DECLARE(char *) apr_pvsprintf(apr_pool_t *pool, const char *fmt, va_list ap)
+     list_remove(active);
+     list_insert(active, node);
+ 
++end:
++#if APR_HAS_THREADSAFE_POOLS
++    if (pool->user_mutex) apr_thread_mutex_unlock(pool->user_mutex);
++#endif
++
+     return strp;
+ 
+ error:
++#if APR_HAS_THREADSAFE_POOLS
++    if (pool->user_mutex) apr_thread_mutex_unlock(pool->user_mutex);
++#endif
++
+     if (pool->abort_fn)
+         pool->abort_fn(APR_ENOMEM);
+     if (ps.got_a_new_node) {
+@@ -2210,6 +2262,10 @@ APR_DECLARE(void) apr_pool_cleanup_register(apr_pool_t *p, const void *data,
+ #endif /* APR_POOL_DEBUG */
+ 
+     if (p != NULL) {
++#if APR_HAS_THREADSAFE_POOLS
++        if (p->user_mutex) apr_thread_mutex_lock(p->user_mutex);
++#endif
++
+         if (p->free_cleanups) {
+             /* reuse a cleanup structure */
+             c = p->free_cleanups;
+@@ -2222,6 +2278,10 @@ APR_DECLARE(void) apr_pool_cleanup_register(apr_pool_t *p, const void *data,
+         c->child_cleanup_fn = child_cleanup_fn;
+         c->next = p->cleanups;
+         p->cleanups = c;
++		
++#if APR_HAS_THREADSAFE_POOLS
++        if (p->user_mutex) apr_thread_mutex_unlock(p->user_mutex);
++#endif
+     }
+ }
+ 
+@@ -2235,6 +2295,10 @@ APR_DECLARE(void) apr_pool_pre_cleanup_register(apr_pool_t *p, const void *data,
+ #endif /* APR_POOL_DEBUG */
+ 
+     if (p != NULL) {
++#if APR_HAS_THREADSAFE_POOLS
++        if (p->user_mutex) apr_thread_mutex_lock(p->user_mutex);
++#endif
++
+         if (p->free_cleanups) {
+             /* reuse a cleanup structure */
+             c = p->free_cleanups;
+@@ -2246,6 +2310,10 @@ APR_DECLARE(void) apr_pool_pre_cleanup_register(apr_pool_t *p, const void *data,
+         c->plain_cleanup_fn = plain_cleanup_fn;
+         c->next = p->pre_cleanups;
+         p->pre_cleanups = c;
++		
++#if APR_HAS_THREADSAFE_POOLS
++        if (p->user_mutex) apr_thread_mutex_unlock(p->user_mutex);
++#endif
+     }
+ }
+ 
+@@ -2261,6 +2329,10 @@ APR_DECLARE(void) apr_pool_cleanup_kill(apr_pool_t *p, const void *data,
+     if (p == NULL)
+         return;
+ 
++#if APR_HAS_THREADSAFE_POOLS
++    if (p->user_mutex) apr_thread_mutex_lock(p->user_mutex);
++#endif
++	
+     c = p->cleanups;
+     lastp = &p->cleanups;
+     while (c) {
+@@ -2310,6 +2382,9 @@ APR_DECLARE(void) apr_pool_cleanup_kill(apr_pool_t *p, const void *data,
+         c = c->next;
+     }
+ 
++#if APR_HAS_THREADSAFE_POOLS
++    if (p->user_mutex) apr_thread_mutex_unlock(p->user_mutex);
++#endif
+ }
+ 
+ APR_DECLARE(void) apr_pool_child_cleanup_set(apr_pool_t *p, const void *data,
+@@ -2325,6 +2400,10 @@ APR_DECLARE(void) apr_pool_child_cleanup_set(apr_pool_t *p, const void *data,
+     if (p == NULL)
+         return;
+ 
++#if APR_HAS_THREADSAFE_POOLS
++    if (p->user_mutex) apr_thread_mutex_lock(p->user_mutex);
++#endif
++	
+     c = p->cleanups;
+     while (c) {
+         if (c->data == data && c->plain_cleanup_fn == plain_cleanup_fn) {
+@@ -2334,6 +2413,10 @@ APR_DECLARE(void) apr_pool_child_cleanup_set(apr_pool_t *p, const void *data,
+ 
+         c = c->next;
+     }
++
++#if APR_HAS_THREADSAFE_POOLS
++    if (p->user_mutex) apr_thread_mutex_unlock(p->user_mutex);
++#endif
+ }
+ 
+ APR_DECLARE(apr_status_t) apr_pool_cleanup_run(apr_pool_t *p, void *data,
+-- 
+2.8.1.windows.1
+

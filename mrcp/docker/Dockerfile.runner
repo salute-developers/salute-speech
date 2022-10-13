@@ -1,0 +1,19 @@
+FROM ubuntu:21.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# install building tools
+RUN apt-get update && apt-get install -y build-essential zip unzip wget autoconf libtool pkg-config xmlstarlet expect
+
+# uniMRCP dependencies
+RUN cd /tmp && wget -O deps.tar.gz https://www.unimrcp.org/component/edocman/unimrcp-deps-1-6-0-tar-gz/download?Itemid=119
+RUN cd /tmp && tar -xvf deps.tar.gz
+RUN cd /tmp/unimrcp-deps-1.6.0 && sed -i 's/sudo//g' build-dep-libs.sh && ./build-dep-libs.sh -s -a /opt/apr -o /opt/sofia
+
+# uniMRCP
+RUN cd /tmp && wget -O unimrcp.tar.gz https://www.unimrcp.org/component/edocman/unimrcp-1-7-0-tar-gz/download?Itemid=119
+RUN cd /tmp && tar -xvf unimrcp.tar.gz
+RUN cd /tmp/unimrcp-1.7.0 && ./configure --with-apr=/opt/apr --with-apr-util=/opt/apr --with-sofia-sip=/opt/sofia && make && make install
+
+
+

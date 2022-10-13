@@ -1,0 +1,9 @@
+#!/usr/bin/expect
+
+spawn "./umc"
+# wait for umc initialization and start synth
+expect -re {^.*MRCP Client Started.*}
+send "run recog\r"
+
+# wait for synthesis complete
+expect -re {^.*Destroy MRCP Handle.*}

@@ -1,0 +1,104 @@
+From 315ceb0eb144ba8eb61dcf86b53bdd57f95f0ab8 Mon Sep 17 00:00:00 2001
+From: Arsen Chaloyan <achaloyan@gmail.com>
+Date: Wed, 26 Mar 2014 18:51:57 -0700
+Subject: [PATCH 6/6] Added _WIN64 preprocessor definition for x64 targets to
+ make Visual Studio IDE outline relevant code fragments appropriately.
+
+---
+ apr.vcproj     | 4 ++--
+ apr.vcxproj    | 4 ++--
+ libapr.vcproj  | 4 ++--
+ libapr.vcxproj | 4 ++--
+ 4 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/apr.vcproj b/apr.vcproj
+index 990a2a4..4a8f7b8 100644
+--- a/apr.vcproj
++++ b/apr.vcproj
+@@ -109,7 +109,7 @@
+ 				AdditionalOptions="/EHsc "
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
+-				PreprocessorDefinitions="_DEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS"
++				PreprocessorDefinitions="_DEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;_WIN64"
+ 				RuntimeLibrary="3"
+ 				WarningLevel="3"
+ 				WarnAsError="true"
+@@ -241,7 +241,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
+-				PreprocessorDefinitions="NDEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS"
++				PreprocessorDefinitions="NDEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;_WIN64"
+ 				StringPooling="true"
+ 				RuntimeLibrary="2"
+ 				EnableFunctionLevelLinking="true"
+diff --git a/apr.vcxproj b/apr.vcxproj
+index acd95d6..0ed277b 100644
+--- a/apr.vcxproj
++++ b/apr.vcxproj
+@@ -67,7 +67,7 @@
+       <AdditionalOptions>/EHsc  %(AdditionalOptions)</AdditionalOptions>
+       <Optimization>Disabled</Optimization>
+       <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+-      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+       <WarningLevel>Level3</WarningLevel>
+       <TreatWarningAsError>true</TreatWarningAsError>
+@@ -103,7 +103,7 @@
+       <Optimization>MaxSpeed</Optimization>
+       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+       <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+-      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <StringPooling>true</StringPooling>
+       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+diff --git a/libapr.vcproj b/libapr.vcproj
+index 112aa3c..f784fd8 100644
+--- a/libapr.vcproj
++++ b/libapr.vcproj
+@@ -133,7 +133,7 @@
+ 				AdditionalOptions="/EHsc "
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
+-				PreprocessorDefinitions="_DEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS"
++				PreprocessorDefinitions="_DEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;_WIN64"
+ 				RuntimeLibrary="3"
+ 				WarningLevel="3"
+ 				WarnAsError="true"
+@@ -308,7 +308,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
+-				PreprocessorDefinitions="NDEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS"
++				PreprocessorDefinitions="NDEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;_WIN64"
+ 				StringPooling="true"
+ 				RuntimeLibrary="2"
+ 				EnableFunctionLevelLinking="true"
+diff --git a/libapr.vcxproj b/libapr.vcxproj
+index a89a094..489218d 100644
+--- a/libapr.vcxproj
++++ b/libapr.vcxproj
+@@ -82,7 +82,7 @@
+       <AdditionalOptions>/EHsc  %(AdditionalOptions)</AdditionalOptions>
+       <Optimization>Disabled</Optimization>
+       <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+-      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+       <WarningLevel>Level3</WarningLevel>
+       <TreatWarningAsError>true</TreatWarningAsError>
+@@ -151,7 +151,7 @@
+       <Optimization>MaxSpeed</Optimization>
+       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+       <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+-      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <StringPooling>true</StringPooling>
+       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+-- 
+2.8.1.windows.1
+

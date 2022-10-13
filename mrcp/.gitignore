@@ -1,0 +1,4 @@
+.env
+/bazel-*
+/output
+compile_commands.json

@@ -1,0 +1,10 @@
+startup --output_user_root='/tmp/bazel-root'
+
+# print out all options from rc files
+build --announce_rc
+
+# allow use of build:linux, build:windows, etc
+build --enable_platform_specific_config
+
+# generate jsons for each build piece
+build:linux --experimental_action_listener=@bazel_compile_commands//:extract_json
