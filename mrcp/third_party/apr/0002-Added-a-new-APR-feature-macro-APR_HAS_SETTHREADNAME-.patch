@@ -1,0 +1,182 @@
+From 84090f5aab60cb5b878186cfbde1e75bcd84db55 Mon Sep 17 00:00:00 2001
+From: Arsen Chaloyan <achaloyan@gmail.com>
+Date: Tue, 21 Jul 2015 18:57:46 -0700
+Subject: [PATCH 2/6] Added a new APR feature macro APR_HAS_SETTHREADNAME and
+ implemented the corresponding function apr_thread_name_set() for win and
+ unix.
+
+---
+ include/apr.h.in          |  7 +++++++
+ include/apr.hnw           |  7 +++++++
+ include/apr.hw            |  7 +++++++
+ include/apr.hwc           |  7 +++++++
+ include/apr_thread_proc.h |  9 +++++++++
+ threadproc/unix/thread.c  | 19 +++++++++++++++++++
+ threadproc/win32/thread.c | 35 +++++++++++++++++++++++++++++++++++
+ 7 files changed, 91 insertions(+)
+
+diff --git a/include/apr.h.in b/include/apr.h.in
+index 117395a..71cd58b 100644
+--- a/include/apr.h.in
++++ b/include/apr.h.in
+@@ -290,6 +290,13 @@ extern "C" {
+  */
+ #define APR_HAS_THREADSAFE_POOLS  APR_HAS_THREADS
+ 
++/*
++ * This definition indicates availability of the function
++ * apr_thread_name_set(), which sets the name of the current 
++ * thread for debugging purposes. [Optional]
++ */
++#define APR_HAS_SETTHREADNAME     1
++
+ /* End of APR feature macros added by/for UniMRCP. */
+ 
+ /* APR sets APR_FILES_AS_SOCKETS to 1 on systems where it is possible
+diff --git a/include/apr.hnw b/include/apr.hnw
+index fba59bd..999c287 100644
+--- a/include/apr.hnw
++++ b/include/apr.hnw
+@@ -224,6 +224,13 @@ extern "C" {
+  */
+ #define APR_HAS_THREADSAFE_POOLS  APR_HAS_THREADS
+ 
++/*
++ * This definition indicates availability of the function
++ * apr_thread_name_set(), which sets the name of the current 
++ * thread for debugging purposes. [Optional]
++ */
++#define APR_HAS_SETTHREADNAME     0
++
+ /* End of APR feature macros added by/for UniMRCP. */
+ 
+ /* Netware can poll on files/pipes.
+diff --git a/include/apr.hw b/include/apr.hw
+index ae608b1..5e4fba6 100644
+--- a/include/apr.hw
++++ b/include/apr.hw
+@@ -342,6 +342,13 @@ extern "C" {
+  */
+ #define APR_HAS_THREADSAFE_POOLS  APR_HAS_THREADS
+ 
++/*
++ * This definition indicates availability of the function
++ * apr_thread_name_set(), which sets the name of the current 
++ * thread for debugging purposes. [Optional]
++ */
++#define APR_HAS_SETTHREADNAME     1
++
+ /* End of APR feature macros added by/for UniMRCP. */
+ 
+ /* APR sets APR_FILES_AS_SOCKETS to 1 on systems where it is possible
+diff --git a/include/apr.hwc b/include/apr.hwc
+index b3fa796..bd2763e 100644
+--- a/include/apr.hwc
++++ b/include/apr.hwc
+@@ -339,6 +339,13 @@ extern "C" {
+  */
+ #define APR_HAS_THREADSAFE_POOLS  APR_HAS_THREADS
+ 
++/*
++ * This definition indicates availability of the function
++ * apr_thread_name_set(), which sets the name of the current 
++ * thread for debugging purposes. [Optional]
++ */
++#define APR_HAS_SETTHREADNAME     1
++
+ /* End of APR feature macros added by/for UniMRCP. */
+ 
+ /* APR sets APR_FILES_AS_SOCKETS to 1 on systems where it is possible
+diff --git a/include/apr_thread_proc.h b/include/apr_thread_proc.h
+index e721ede..d9960eb 100644
+--- a/include/apr_thread_proc.h
++++ b/include/apr_thread_proc.h
+@@ -388,6 +388,15 @@ APR_DECLARE(apr_status_t) apr_threadkey_data_set(void *data, const char *key,
+                                                 apr_status_t (*cleanup) (void *),
+                                                 apr_threadkey_t *threadkey);
+ 
++#if APR_HAS_SETTHREADNAME
++/**
++ * Set the name of the current thread for debugging.
++ * @param name The name of the thread to set. Should not exceed 16 characters (bytes).
++ * @remarks No-op for release builds on Windows.
++ */
++APR_DECLARE(apr_status_t) apr_thread_name_set(const char *name);
++#endif /* APR_HAS_SETTHREADNAME */
++
+ #endif
+ 
+ /**
+diff --git a/threadproc/unix/thread.c b/threadproc/unix/thread.c
+index 6d060be..becb3a9 100644
+--- a/threadproc/unix/thread.c
++++ b/threadproc/unix/thread.c
+@@ -332,3 +332,22 @@ APR_DECLARE(apr_status_t) apr_os_thread_get(void)
+ }
+ 
+ #endif
++
++#if APR_HAS_SETTHREADNAME
++APR_DECLARE(apr_status_t) apr_thread_name_set(const char *name)
++{
++#if defined(__GLIBC_PREREQ) && __GLIBC_PREREQ(2, 12)
++    pthread_t pth = pthread_self();
++    int ret = pthread_setname_np(pth, name);
++    if (ret == ERANGE) {
++        /* This implementation requires max 16 chars including NUL. */
++        char shorter_name[16];
++        apr_cpystrn(shorter_name, name, sizeof(shorter_name));
++        ret = pthread_setname_np(pth, shorter_name);
++    }
++    ret ? APR_EGENERAL : APR_SUCCESS;
++#else
++    return APR_ENOTIMPL;
++#endif
++}
++#endif /* APR_HAS_SETTHREADNAME */
+diff --git a/threadproc/win32/thread.c b/threadproc/win32/thread.c
+index 2503457..d65911f 100644
+--- a/threadproc/win32/thread.c
++++ b/threadproc/win32/thread.c
+@@ -279,3 +279,38 @@ APR_DECLARE(int) apr_os_thread_equal(apr_os_thread_t tid1,
+ }
+ 
+ APR_POOL_IMPLEMENT_ACCESSOR(thread)
++
++#if APR_HAS_SETTHREADNAME
++APR_DECLARE(apr_status_t) apr_thread_name_set(const char *name)
++{
++#if !defined(DEBUG) && !defined(_DEBUG)
++    (void) name;
++    return APR_SUCCESS;
++#else /* Release build */
++#if defined(_MSC_VER)
++#pragma pack(push, 8)
++    DWORD tid = GetCurrentThreadId();
++    if (tid) {
++        static const DWORD MS_VC_EXCEPTION = 0x406D1388;
++        struct tagTHREADNAME_INFO {
++            DWORD dwType;     /**< Must be 0x1000. */
++            LPCSTR szName;    /**< Pointer to name (in user addr space). */
++            DWORD dwThreadID; /**< Thread ID (-1=caller thread). */
++            DWORD dwFlags;    /**< Reserved for future use, must be zero. */
++        } info;
++        info.dwType = 0x1000;
++        info.szName = name;
++        info.dwThreadID = tid;
++        info.dwFlags = 0;
++        __try {
++            RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
++        } __except(EXCEPTION_EXECUTE_HANDLER) {
++        }
++        return APR_SUCCESS;
++    }
++    return APR_ENOTHREAD;
++#pragma pack(pop)
++#endif
++#endif
++}
++#endif /* APR_HAS_SETTHREADNAME */
+-- 
+2.8.1.windows.1
+

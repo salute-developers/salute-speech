@@ -1,0 +1,3601 @@
+From 54a8d304f1743d63c58ce77a0a689e74480d277c Mon Sep 17 00:00:00 2001
+From: Arsen Chaloyan <achaloyan@gmail.com>
+Date: Wed, 27 Nov 2013 17:03:07 -0800
+Subject: [PATCH 4/6] Added project files for VS2005 and VS2010.
+
+---
+ apr.vcproj             |  975 ++++++++++++++++++++++++++++++++++++++++++++
+ apr.vcxproj            |  266 ++++++++++++
+ apr.vcxproj.filters    |  450 ++++++++++++++++++++
+ libapr.vcproj          | 1065 ++++++++++++++++++++++++++++++++++++++++++++++++
+ libapr.vcxproj         |  329 +++++++++++++++
+ libapr.vcxproj.filters |  453 ++++++++++++++++++++
+ 6 files changed, 3538 insertions(+)
+ create mode 100644 apr.vcproj
+ create mode 100644 apr.vcxproj
+ create mode 100644 apr.vcxproj.filters
+ create mode 100644 libapr.vcproj
+ create mode 100644 libapr.vcxproj
+ create mode 100644 libapr.vcxproj.filters
+
+diff --git a/apr.vcproj b/apr.vcproj
+new file mode 100644
+index 0000000..990a2a4
+--- /dev/null
++++ b/apr.vcproj
+@@ -0,0 +1,975 @@
++<?xml version="1.0" encoding="Windows-1252"?>
++<VisualStudioProject
++	ProjectType="Visual C++"
++	Version="8.00"
++	Name="apr"
++	ProjectGUID="{2A8A2B66-5207-41C5-A15F-287344827787}"
++	>
++	<Platforms>
++		<Platform
++			Name="Win32"
++		/>
++		<Platform
++			Name="x64"
++		/>
++	</Platforms>
++	<ToolFiles>
++	</ToolFiles>
++	<Configurations>
++		<Configuration
++			Name="Debug|Win32"
++			OutputDirectory="LibD"
++			IntermediateDirectory="LibD"
++			ConfigurationType="4"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				AdditionalOptions="/EHsc "
++				Optimization="0"
++				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
++				PreprocessorDefinitions="_DEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS"
++				RuntimeLibrary="3"
++				WarningLevel="3"
++				WarnAsError="true"
++				DebugInformationFormat="3"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="_DEBUG"
++				Culture="1033"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLibrarianTool"
++				OutputFile="$(OutDir)\apr-1.lib"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Debug|x64"
++			OutputDirectory="$(PlatformName)\LibD"
++			IntermediateDirectory="$(PlatformName)\LibD"
++			ConfigurationType="4"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				AdditionalOptions="/EHsc "
++				Optimization="0"
++				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
++				PreprocessorDefinitions="_DEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS"
++				RuntimeLibrary="3"
++				WarningLevel="3"
++				WarnAsError="true"
++				DebugInformationFormat="3"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="_DEBUG"
++				Culture="1033"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLibrarianTool"
++				OutputFile="$(OutDir)\apr-1.lib"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Release|Win32"
++			OutputDirectory="LibR"
++			IntermediateDirectory="LibR"
++			ConfigurationType="4"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				Optimization="2"
++				InlineFunctionExpansion="1"
++				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
++				PreprocessorDefinitions="NDEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS"
++				StringPooling="true"
++				RuntimeLibrary="2"
++				EnableFunctionLevelLinking="true"
++				WarningLevel="3"
++				WarnAsError="true"
++				DebugInformationFormat="3"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="NDEBUG"
++				Culture="1033"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLibrarianTool"
++				OutputFile="$(OutDir)\apr-1.lib"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Release|x64"
++			OutputDirectory="$(PlatformName)\LibR"
++			IntermediateDirectory="$(PlatformName)\LibR"
++			ConfigurationType="4"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				Optimization="2"
++				InlineFunctionExpansion="1"
++				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
++				PreprocessorDefinitions="NDEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS"
++				StringPooling="true"
++				RuntimeLibrary="2"
++				EnableFunctionLevelLinking="true"
++				WarningLevel="3"
++				WarnAsError="true"
++				DebugInformationFormat="3"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="NDEBUG"
++				Culture="1033"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLibrarianTool"
++				OutputFile="$(OutDir)\apr-1.lib"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++			/>
++		</Configuration>
++	</Configurations>
++	<References>
++	</References>
++	<Files>
++		<Filter
++			Name="Source Files"
++			Filter=".c"
++			>
++			<Filter
++				Name="atomic"
++				>
++				<File
++					RelativePath="atomic\win32\apr_atomic.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="dso"
++				>
++				<File
++					RelativePath="dso\win32\dso.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="encoding"
++				>
++				<File
++					RelativePath="encoding\apr_escape.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="file_io"
++				>
++				<File
++					RelativePath="file_io\win32\buffer.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\copy.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\dir.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\fileacc.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\filedup.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\filepath.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\filepath_util.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\filestat.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\filesys.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\flock.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\fullrw.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\mktemp.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\open.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\pipe.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\readwrite.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\seek.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\tempdir.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="locks"
++				>
++				<File
++					RelativePath="locks\win32\proc_mutex.c"
++					>
++				</File>
++				<File
++					RelativePath="locks\win32\thread_cond.c"
++					>
++				</File>
++				<File
++					RelativePath="locks\win32\thread_mutex.c"
++					>
++				</File>
++				<File
++					RelativePath="locks\win32\thread_rwlock.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="memory"
++				>
++				<File
++					RelativePath="memory\unix\apr_pools.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="misc"
++				>
++				<File
++					RelativePath="misc\win32\apr_app.c"
++					>
++					<FileConfiguration
++						Name="Debug|Win32"
++						ExcludedFromBuild="true"
++						>
++					</FileConfiguration>
++					<FileConfiguration
++						Name="Debug|x64"
++						ExcludedFromBuild="true"
++						>
++					</FileConfiguration>
++					<FileConfiguration
++						Name="Release|Win32"
++						ExcludedFromBuild="true"
++						>
++					</FileConfiguration>
++					<FileConfiguration
++						Name="Release|x64"
++						ExcludedFromBuild="true"
++						>
++					</FileConfiguration>
++				</File>
++				<File
++					RelativePath="misc\win32\charset.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\env.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\unix\errorcodes.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\unix\getopt.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\internal.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\misc.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\unix\otherchild.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\rand.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\start.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\utf8.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\unix\version.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="mmap"
++				>
++				<File
++					RelativePath="mmap\unix\common.c"
++					>
++				</File>
++				<File
++					RelativePath="mmap\win32\mmap.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="network_io"
++				>
++				<File
++					RelativePath="network_io\unix\inet_ntop.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\unix\inet_pton.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\unix\multicast.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\win32\sendrecv.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\unix\sockaddr.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\unix\socket_util.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\win32\sockets.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\win32\sockopt.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="passwd"
++				>
++				<File
++					RelativePath="passwd\apr_getpass.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="poll"
++				>
++				<File
++					RelativePath="poll\unix\poll.c"
++					>
++				</File>
++				<File
++					RelativePath="poll\unix\pollcb.c"
++					>
++				</File>
++				<File
++					RelativePath="poll\unix\pollset.c"
++					>
++				</File>
++				<File
++					RelativePath="poll\unix\select.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="random"
++				>
++				<File
++					RelativePath="random\unix\apr_random.c"
++					>
++				</File>
++				<File
++					RelativePath="random\unix\sha2.c"
++					>
++				</File>
++				<File
++					RelativePath="random\unix\sha2_glue.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="shmem"
++				>
++				<File
++					RelativePath="shmem\win32\shm.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="strings"
++				>
++				<File
++					RelativePath="strings\apr_cpystrn.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_fnmatch.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_snprintf.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_strings.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_strnatcmp.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_strtok.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="tables"
++				>
++				<File
++					RelativePath="tables\apr_hash.c"
++					>
++				</File>
++				<File
++					RelativePath="tables\apr_skiplist.c"
++					>
++				</File>
++				<File
++					RelativePath="tables\apr_tables.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="threadproc"
++				>
++				<File
++					RelativePath="threadproc\win32\proc.c"
++					>
++				</File>
++				<File
++					RelativePath="threadproc\win32\signals.c"
++					>
++				</File>
++				<File
++					RelativePath="threadproc\win32\thread.c"
++					>
++				</File>
++				<File
++					RelativePath="threadproc\win32\threadpriv.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="time"
++				>
++				<File
++					RelativePath="time\win32\time.c"
++					>
++				</File>
++				<File
++					RelativePath="time\win32\timestr.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="user"
++				>
++				<File
++					RelativePath="user\win32\groupinfo.c"
++					>
++				</File>
++				<File
++					RelativePath="user\win32\userinfo.c"
++					>
++				</File>
++			</Filter>
++		</Filter>
++		<Filter
++			Name="Private Header Files"
++			>
++			<File
++				RelativePath="include\arch\win32\apr_arch_atime.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_dso.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_file_io.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_inherit.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_misc.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_networkio.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_thread_mutex.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_thread_rwlock.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_threadproc.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_utf8.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_private.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\apr_private_common.h"
++				>
++			</File>
++		</Filter>
++		<Filter
++			Name="Public Header Files"
++			>
++			<File
++				RelativePath="include\apr.h.in"
++				>
++				<FileConfiguration
++					Name="Debug|Win32"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Debug|x64"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|Win32"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|x64"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++			</File>
++			<File
++				RelativePath="include\apr.hnw"
++				>
++				<FileConfiguration
++					Name="Debug|Win32"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Debug|x64"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|Win32"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|x64"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++			</File>
++			<File
++				RelativePath="include\apr.hw"
++				>
++				<FileConfiguration
++					Name="Debug|Win32"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++						Description="Creating apr.h from apr.hw"
++						CommandLine="type .\include\apr.hw &gt; .\include\apr.h&#x0D;&#x0A;"
++						Outputs=".\include\apr.h"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Debug|x64"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++						Description="Creating apr.h from apr.hw"
++						CommandLine="type .\include\apr.hw &gt; .\include\apr.h&#x0D;&#x0A;"
++						Outputs=".\include\apr.h"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|Win32"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++						Description="Creating apr.h from apr.hw"
++						CommandLine="type .\include\apr.hw &gt; .\include\apr.h&#x0D;&#x0A;"
++						Outputs=".\include\apr.h"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|x64"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++						Description="Creating apr.h from apr.hw"
++						CommandLine="type .\include\apr.hw &gt; .\include\apr.h&#x0D;&#x0A;"
++						Outputs=".\include\apr.h"
++					/>
++				</FileConfiguration>
++			</File>
++			<File
++				RelativePath="include\apr_allocator.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_atomic.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_dso.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_env.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_errno.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_escape.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_file_info.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_file_io.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_fnmatch.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_general.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_getopt.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_global_mutex.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_hash.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_inherit.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_lib.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_mmap.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_network_io.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_poll.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_pools.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_portable.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_proc_mutex.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_random.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_ring.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_shm.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_signal.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_skiplist.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_strings.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_support.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_tables.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_thread_cond.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_thread_mutex.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_thread_proc.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_thread_rwlock.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_time.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_user.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_version.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_want.h"
++				>
++			</File>
++		</Filter>
++	</Files>
++	<Globals>
++	</Globals>
++</VisualStudioProject>
+diff --git a/apr.vcxproj b/apr.vcxproj
+new file mode 100644
+index 0000000..acd95d6
+--- /dev/null
++++ b/apr.vcxproj
+@@ -0,0 +1,266 @@
++﻿<?xml version="1.0" encoding="utf-8"?>
++<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ItemGroup Label="ProjectConfigurations">
++    <ProjectConfiguration Include="Debug|Win32">
++      <Configuration>Debug</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Debug|x64">
++      <Configuration>Debug</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|Win32">
++      <Configuration>Release</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|x64">
++      <Configuration>Release</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++  </ItemGroup>
++  <PropertyGroup Label="Globals">
++    <ProjectGuid>{2A8A2B66-5207-41C5-A15F-287344827787}</ProjectGuid>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
++  <PropertyGroup Label="Configuration">
++    <ConfigurationType>StaticLibrary</ConfigurationType>
++    <UseOfMfc>false</UseOfMfc>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
++  <ImportGroup Label="ExtensionSettings">
++  </ImportGroup>
++  <ImportGroup Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++  </ImportGroup>
++  <PropertyGroup Label="UserMacros" />
++  <PropertyGroup>
++    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
++    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LibD\</OutDir>
++    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LibD\</IntDir>
++    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\LibD\</OutDir>
++    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\LibD\</IntDir>
++    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">LibR\</OutDir>
++    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">LibR\</IntDir>
++    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\LibR\</OutDir>
++    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\LibR\</IntDir>
++    <TargetName>$(ProjectName)-1</TargetName>
++  </PropertyGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
++    <ClCompile>
++      <AdditionalOptions>/EHsc  %(AdditionalOptions)</AdditionalOptions>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <WarningLevel>Level3</WarningLevel>
++      <TreatWarningAsError>true</TreatWarningAsError>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0409</Culture>
++    </ResourceCompile>
++    <Lib />
++    <Bscmake />
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <ClCompile>
++      <AdditionalOptions>/EHsc  %(AdditionalOptions)</AdditionalOptions>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <WarningLevel>Level3</WarningLevel>
++      <TreatWarningAsError>true</TreatWarningAsError>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0409</Culture>
++    </ResourceCompile>
++    <Lib />
++    <Bscmake />
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
++      <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <FunctionLevelLinking>true</FunctionLevelLinking>
++      <WarningLevel>Level3</WarningLevel>
++      <TreatWarningAsError>true</TreatWarningAsError>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0409</Culture>
++    </ResourceCompile>
++    <Lib />
++    <Bscmake />
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
++      <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_STATIC;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <FunctionLevelLinking>true</FunctionLevelLinking>
++      <WarningLevel>Level3</WarningLevel>
++      <TreatWarningAsError>true</TreatWarningAsError>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0409</Culture>
++    </ResourceCompile>
++    <Lib />
++    <Bscmake />
++  </ItemDefinitionGroup>
++  <ItemGroup>
++    <ClCompile Include="atomic\win32\apr_atomic.c" />
++    <ClCompile Include="dso\win32\dso.c" />
++    <ClCompile Include="encoding\apr_escape.c" />
++    <ClCompile Include="file_io\win32\buffer.c" />
++    <ClCompile Include="file_io\unix\copy.c" />
++    <ClCompile Include="file_io\win32\dir.c" />
++    <ClCompile Include="file_io\unix\fileacc.c" />
++    <ClCompile Include="file_io\win32\filedup.c" />
++    <ClCompile Include="file_io\win32\filepath.c" />
++    <ClCompile Include="file_io\unix\filepath_util.c" />
++    <ClCompile Include="file_io\win32\filestat.c" />
++    <ClCompile Include="file_io\win32\filesys.c" />
++    <ClCompile Include="file_io\win32\flock.c" />
++    <ClCompile Include="file_io\unix\fullrw.c" />
++    <ClCompile Include="file_io\unix\mktemp.c" />
++    <ClCompile Include="file_io\win32\open.c" />
++    <ClCompile Include="file_io\win32\pipe.c" />
++    <ClCompile Include="file_io\win32\readwrite.c" />
++    <ClCompile Include="file_io\win32\seek.c" />
++    <ClCompile Include="file_io\unix\tempdir.c" />
++    <ClCompile Include="locks\win32\proc_mutex.c" />
++    <ClCompile Include="locks\win32\thread_cond.c" />
++    <ClCompile Include="locks\win32\thread_mutex.c" />
++    <ClCompile Include="locks\win32\thread_rwlock.c" />
++    <ClCompile Include="memory\unix\apr_pools.c" />
++    <ClCompile Include="misc\win32\apr_app.c">
++      <ExcludedFromBuild>true</ExcludedFromBuild>
++    </ClCompile>
++    <ClCompile Include="misc\win32\charset.c" />
++    <ClCompile Include="misc\win32\env.c" />
++    <ClCompile Include="misc\unix\errorcodes.c" />
++    <ClCompile Include="misc\unix\getopt.c" />
++    <ClCompile Include="misc\win32\internal.c" />
++    <ClCompile Include="misc\win32\misc.c" />
++    <ClCompile Include="misc\unix\otherchild.c" />
++    <ClCompile Include="misc\win32\rand.c" />
++    <ClCompile Include="misc\win32\start.c" />
++    <ClCompile Include="misc\win32\utf8.c" />
++    <ClCompile Include="misc\unix\version.c" />
++    <ClCompile Include="mmap\unix\common.c" />
++    <ClCompile Include="mmap\win32\mmap.c" />
++    <ClCompile Include="network_io\unix\inet_ntop.c" />
++    <ClCompile Include="network_io\unix\inet_pton.c" />
++    <ClCompile Include="network_io\unix\multicast.c" />
++    <ClCompile Include="network_io\win32\sendrecv.c" />
++    <ClCompile Include="network_io\unix\sockaddr.c" />
++    <ClCompile Include="network_io\unix\socket_util.c" />
++    <ClCompile Include="network_io\win32\sockets.c" />
++    <ClCompile Include="network_io\win32\sockopt.c" />
++    <ClCompile Include="passwd\apr_getpass.c" />
++    <ClCompile Include="poll\unix\poll.c" />
++    <ClCompile Include="poll\unix\pollcb.c" />
++    <ClCompile Include="poll\unix\pollset.c" />
++    <ClCompile Include="poll\unix\select.c" />
++    <ClCompile Include="random\unix\apr_random.c" />
++    <ClCompile Include="random\unix\sha2.c" />
++    <ClCompile Include="random\unix\sha2_glue.c" />
++    <ClCompile Include="shmem\win32\shm.c" />
++    <ClCompile Include="strings\apr_cpystrn.c" />
++    <ClCompile Include="strings\apr_fnmatch.c" />
++    <ClCompile Include="strings\apr_snprintf.c" />
++    <ClCompile Include="strings\apr_strings.c" />
++    <ClCompile Include="strings\apr_strnatcmp.c" />
++    <ClCompile Include="strings\apr_strtok.c" />
++    <ClCompile Include="tables\apr_hash.c" />
++    <ClCompile Include="tables\apr_skiplist.c" />
++    <ClCompile Include="tables\apr_tables.c" />
++    <ClCompile Include="threadproc\win32\proc.c" />
++    <ClCompile Include="threadproc\win32\signals.c" />
++    <ClCompile Include="threadproc\win32\thread.c" />
++    <ClCompile Include="threadproc\win32\threadpriv.c" />
++    <ClCompile Include="time\win32\time.c" />
++    <ClCompile Include="time\win32\timestr.c" />
++    <ClCompile Include="user\win32\groupinfo.c" />
++    <ClCompile Include="user\win32\userinfo.c" />
++  </ItemGroup>
++  <ItemGroup>
++    <ClInclude Include="include\arch\win32\apr_arch_atime.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_dso.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_file_io.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_inherit.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_misc.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_networkio.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_thread_mutex.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_thread_rwlock.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_threadproc.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_utf8.h" />
++    <ClInclude Include="include\arch\win32\apr_private.h" />
++    <ClInclude Include="include\arch\apr_private_common.h" />
++    <ClInclude Include="include\apr_allocator.h" />
++    <ClInclude Include="include\apr_atomic.h" />
++    <ClInclude Include="include\apr_dso.h" />
++    <ClInclude Include="include\apr_env.h" />
++    <ClInclude Include="include\apr_errno.h" />
++    <ClInclude Include="include\apr_escape.h" />
++    <ClInclude Include="include\apr_file_info.h" />
++    <ClInclude Include="include\apr_file_io.h" />
++    <ClInclude Include="include\apr_fnmatch.h" />
++    <ClInclude Include="include\apr_general.h" />
++    <ClInclude Include="include\apr_getopt.h" />
++    <ClInclude Include="include\apr_global_mutex.h" />
++    <ClInclude Include="include\apr_hash.h" />
++    <ClInclude Include="include\apr_inherit.h" />
++    <ClInclude Include="include\apr_lib.h" />
++    <ClInclude Include="include\apr_mmap.h" />
++    <ClInclude Include="include\apr_network_io.h" />
++    <ClInclude Include="include\apr_poll.h" />
++    <ClInclude Include="include\apr_pools.h" />
++    <ClInclude Include="include\apr_portable.h" />
++    <ClInclude Include="include\apr_proc_mutex.h" />
++    <ClInclude Include="include\apr_random.h" />
++    <ClInclude Include="include\apr_ring.h" />
++    <ClInclude Include="include\apr_shm.h" />
++    <ClInclude Include="include\apr_signal.h" />
++    <ClInclude Include="include\apr_skiplist.h" />
++    <ClInclude Include="include\apr_strings.h" />
++    <ClInclude Include="include\apr_support.h" />
++    <ClInclude Include="include\apr_tables.h" />
++    <ClInclude Include="include\apr_thread_cond.h" />
++    <ClInclude Include="include\apr_thread_mutex.h" />
++    <ClInclude Include="include\apr_thread_proc.h" />
++    <ClInclude Include="include\apr_thread_rwlock.h" />
++    <ClInclude Include="include\apr_time.h" />
++    <ClInclude Include="include\apr_user.h" />
++    <ClInclude Include="include\apr_version.h" />
++    <ClInclude Include="include\apr_want.h" />
++  </ItemGroup>
++  <ItemGroup>
++    <CustomBuild Include="include\apr.h.in">
++      <FileType>Document</FileType>
++      <ExcludedFromBuild>true</ExcludedFromBuild>
++    </CustomBuild>
++    <CustomBuild Include="include\apr.hnw">
++      <FileType>Document</FileType>
++      <ExcludedFromBuild>true</ExcludedFromBuild>
++    </CustomBuild>
++    <CustomBuild Include="include\apr.hw">
++      <Message>Creating apr.h from apr.hw</Message>
++      <Command>type .\include\apr.hw &gt; .\include\apr.h</Command>
++      <Outputs>.\include\apr.h;%(Outputs)</Outputs>
++    </CustomBuild>
++  </ItemGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
++  <ImportGroup Label="ExtensionTargets">
++  </ImportGroup>
++</Project>
+\ No newline at end of file
+diff --git a/apr.vcxproj.filters b/apr.vcxproj.filters
+new file mode 100644
+index 0000000..1b84b0e
+--- /dev/null
++++ b/apr.vcxproj.filters
+@@ -0,0 +1,450 @@
++﻿<?xml version="1.0" encoding="utf-8"?>
++<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ItemGroup>
++    <Filter Include="Source Files">
++      <UniqueIdentifier>{94a5f4f3-a167-442a-903b-331f1f0b2f74}</UniqueIdentifier>
++      <Extensions>.c</Extensions>
++    </Filter>
++    <Filter Include="Source Files\atomic">
++      <UniqueIdentifier>{c524cde3-ebbb-445c-895e-a1c77fb2895f}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\dso">
++      <UniqueIdentifier>{14d3e46b-678e-45c4-ac33-6ae5a7efae6b}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\encoding">
++      <UniqueIdentifier>{a4659928-db6f-473d-89b0-04017e4a5aa0}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\file_io">
++      <UniqueIdentifier>{a0a8d862-eddf-4320-b460-0dff074389d7}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\locks">
++      <UniqueIdentifier>{7365442b-81f2-4ae5-bc20-05188ea91d98}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\memory">
++      <UniqueIdentifier>{3bad8a9f-b475-4ec4-bcb9-67d098f80e36}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\misc">
++      <UniqueIdentifier>{4407ac01-0ad4-42ca-a5a2-4a2eac799de4}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\mmap">
++      <UniqueIdentifier>{8123d302-33c7-4c97-891e-1a64d5385845}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\network_io">
++      <UniqueIdentifier>{b44c4c61-087c-480a-aaf6-2d646530abcf}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\passwd">
++      <UniqueIdentifier>{89cf2832-172c-4170-b45e-6b685807742c}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\poll">
++      <UniqueIdentifier>{b0764620-7b7c-418f-a0e4-99042024ebed}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\random">
++      <UniqueIdentifier>{f3208cc8-dfc6-4005-88fb-9c73dafb7490}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\shmem">
++      <UniqueIdentifier>{adc09005-665e-43b2-9348-4936ccd209e8}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\strings">
++      <UniqueIdentifier>{ba5e8d5d-4738-456b-b37e-c83274659a42}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\tables">
++      <UniqueIdentifier>{e7523ce8-85f1-4cb1-b214-72a7964682f7}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\threadproc">
++      <UniqueIdentifier>{f26a62c3-dccc-49b1-876c-ce8b7571647a}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\time">
++      <UniqueIdentifier>{40832b89-5f70-4045-85ae-807410eb67a1}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\user">
++      <UniqueIdentifier>{c47c8954-d3d4-40ad-902f-04c23b6d4efe}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Private Header Files">
++      <UniqueIdentifier>{ca9d9597-def4-40a0-81c9-8b732ba89813}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Public Header Files">
++      <UniqueIdentifier>{e4be1648-a570-4c3e-aaa5-b61a5a61480d}</UniqueIdentifier>
++    </Filter>
++  </ItemGroup>
++  <ItemGroup>
++    <ClCompile Include="atomic\win32\apr_atomic.c">
++      <Filter>Source Files\atomic</Filter>
++    </ClCompile>
++    <ClCompile Include="dso\win32\dso.c">
++      <Filter>Source Files\dso</Filter>
++    </ClCompile>
++    <ClCompile Include="encoding\apr_escape.c">
++      <Filter>Source Files\encoding</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\buffer.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\copy.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\dir.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\fileacc.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\filedup.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\filepath.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\filepath_util.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\filestat.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\filesys.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\flock.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\fullrw.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\mktemp.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\open.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\pipe.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\readwrite.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\seek.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\tempdir.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="locks\win32\proc_mutex.c">
++      <Filter>Source Files\locks</Filter>
++    </ClCompile>
++    <ClCompile Include="locks\win32\thread_cond.c">
++      <Filter>Source Files\locks</Filter>
++    </ClCompile>
++    <ClCompile Include="locks\win32\thread_mutex.c">
++      <Filter>Source Files\locks</Filter>
++    </ClCompile>
++    <ClCompile Include="locks\win32\thread_rwlock.c">
++      <Filter>Source Files\locks</Filter>
++    </ClCompile>
++    <ClCompile Include="memory\unix\apr_pools.c">
++      <Filter>Source Files\memory</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\apr_app.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\charset.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\env.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\unix\errorcodes.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\unix\getopt.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\internal.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\misc.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\unix\otherchild.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\rand.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\start.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\utf8.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\unix\version.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="mmap\unix\common.c">
++      <Filter>Source Files\mmap</Filter>
++    </ClCompile>
++    <ClCompile Include="mmap\win32\mmap.c">
++      <Filter>Source Files\mmap</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\inet_ntop.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\inet_pton.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\multicast.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\win32\sendrecv.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\sockaddr.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\socket_util.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\win32\sockets.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\win32\sockopt.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="passwd\apr_getpass.c">
++      <Filter>Source Files\passwd</Filter>
++    </ClCompile>
++    <ClCompile Include="poll\unix\poll.c">
++      <Filter>Source Files\poll</Filter>
++    </ClCompile>
++    <ClCompile Include="poll\unix\pollcb.c">
++      <Filter>Source Files\poll</Filter>
++    </ClCompile>
++    <ClCompile Include="poll\unix\pollset.c">
++      <Filter>Source Files\poll</Filter>
++    </ClCompile>
++    <ClCompile Include="poll\unix\select.c">
++      <Filter>Source Files\poll</Filter>
++    </ClCompile>
++    <ClCompile Include="random\unix\apr_random.c">
++      <Filter>Source Files\random</Filter>
++    </ClCompile>
++    <ClCompile Include="random\unix\sha2.c">
++      <Filter>Source Files\random</Filter>
++    </ClCompile>
++    <ClCompile Include="random\unix\sha2_glue.c">
++      <Filter>Source Files\random</Filter>
++    </ClCompile>
++    <ClCompile Include="shmem\win32\shm.c">
++      <Filter>Source Files\shmem</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_cpystrn.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_fnmatch.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_snprintf.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_strings.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_strnatcmp.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_strtok.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="tables\apr_hash.c">
++      <Filter>Source Files\tables</Filter>
++    </ClCompile>
++    <ClCompile Include="tables\apr_skiplist.c">
++      <Filter>Source Files\tables</Filter>
++    </ClCompile>
++    <ClCompile Include="tables\apr_tables.c">
++      <Filter>Source Files\tables</Filter>
++    </ClCompile>
++    <ClCompile Include="threadproc\win32\proc.c">
++      <Filter>Source Files\threadproc</Filter>
++    </ClCompile>
++    <ClCompile Include="threadproc\win32\signals.c">
++      <Filter>Source Files\threadproc</Filter>
++    </ClCompile>
++    <ClCompile Include="threadproc\win32\thread.c">
++      <Filter>Source Files\threadproc</Filter>
++    </ClCompile>
++    <ClCompile Include="threadproc\win32\threadpriv.c">
++      <Filter>Source Files\threadproc</Filter>
++    </ClCompile>
++    <ClCompile Include="time\win32\time.c">
++      <Filter>Source Files\time</Filter>
++    </ClCompile>
++    <ClCompile Include="time\win32\timestr.c">
++      <Filter>Source Files\time</Filter>
++    </ClCompile>
++    <ClCompile Include="user\win32\groupinfo.c">
++      <Filter>Source Files\user</Filter>
++    </ClCompile>
++    <ClCompile Include="user\win32\userinfo.c">
++      <Filter>Source Files\user</Filter>
++    </ClCompile>
++  </ItemGroup>
++  <ItemGroup>
++    <ClInclude Include="include\arch\win32\apr_arch_atime.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_dso.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_file_io.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_inherit.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_misc.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_networkio.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_thread_mutex.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_thread_rwlock.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_threadproc.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_utf8.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_private.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\apr_private_common.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_allocator.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_atomic.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_dso.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_env.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_errno.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_escape.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_file_info.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_file_io.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_fnmatch.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_general.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_getopt.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_global_mutex.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_hash.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_inherit.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_lib.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_mmap.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_network_io.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_poll.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_pools.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_portable.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_proc_mutex.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_random.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_ring.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_shm.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_signal.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_skiplist.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_strings.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_support.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_tables.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_thread_cond.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_thread_mutex.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_thread_proc.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_thread_rwlock.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_time.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_user.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_version.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_want.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++  </ItemGroup>
++  <ItemGroup>
++    <CustomBuild Include="include\apr.h.in">
++      <Filter>Public Header Files</Filter>
++    </CustomBuild>
++    <CustomBuild Include="include\apr.hnw">
++      <Filter>Public Header Files</Filter>
++    </CustomBuild>
++    <CustomBuild Include="include\apr.hw">
++      <Filter>Public Header Files</Filter>
++    </CustomBuild>
++  </ItemGroup>
++</Project>
+\ No newline at end of file
+diff --git a/libapr.vcproj b/libapr.vcproj
+new file mode 100644
+index 0000000..d702671
+--- /dev/null
++++ b/libapr.vcproj
+@@ -0,0 +1,1065 @@
++<?xml version="1.0" encoding="Windows-1252"?>
++<VisualStudioProject
++	ProjectType="Visual C++"
++	Version="8.00"
++	Name="libapr"
++	ProjectGUID="{A74881C1-090A-4A0F-AC0E-79F5D3BD872C}"
++	>
++	<Platforms>
++		<Platform
++			Name="Win32"
++		/>
++		<Platform
++			Name="x64"
++		/>
++	</Platforms>
++	<ToolFiles>
++	</ToolFiles>
++	<Configurations>
++		<Configuration
++			Name="Debug|Win32"
++			OutputDirectory="$(ConfigurationName)"
++			IntermediateDirectory="$(ConfigurationName)"
++			ConfigurationType="2"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++				PreprocessorDefinitions="_DEBUG"
++				MkTypLibCompatible="true"
++				TargetEnvironment="1"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				AdditionalOptions="/EHsc "
++				Optimization="0"
++				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
++				PreprocessorDefinitions="_DEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS"
++				RuntimeLibrary="3"
++				WarningLevel="3"
++				WarnAsError="true"
++				DebugInformationFormat="3"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="_DEBUG,APR_VERSION_ONLY"
++				Culture="1033"
++				AdditionalIncludeDirectories="./include"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLinkerTool"
++				AdditionalDependencies="ws2_32.lib mswsock.lib rpcrt4.lib"
++				OutputFile="$(OutDir)\libapr-1.dll"
++				LinkIncremental="1"
++				GenerateDebugInformation="true"
++				SubSystem="2"
++				BaseAddress="0x6EEC0000"
++				TargetMachine="1"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCManifestTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCAppVerifierTool"
++			/>
++			<Tool
++				Name="VCWebDeploymentTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++				Description="Embed .manifest"
++				CommandLine="if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath);2"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Debug|x64"
++			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
++			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
++			ConfigurationType="2"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++				PreprocessorDefinitions="_DEBUG"
++				MkTypLibCompatible="true"
++				TargetEnvironment="3"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				AdditionalOptions="/EHsc "
++				Optimization="0"
++				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
++				PreprocessorDefinitions="_DEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS"
++				RuntimeLibrary="3"
++				WarningLevel="3"
++				WarnAsError="true"
++				DebugInformationFormat="3"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="_DEBUG,APR_VERSION_ONLY"
++				Culture="1033"
++				AdditionalIncludeDirectories="./include"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLinkerTool"
++				AdditionalDependencies="ws2_32.lib mswsock.lib rpcrt4.lib"
++				OutputFile="$(OutDir)\libapr-1.dll"
++				LinkIncremental="1"
++				GenerateDebugInformation="true"
++				SubSystem="2"
++				BaseAddress="0x6EEC0000"
++				TargetMachine="17"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCManifestTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCAppVerifierTool"
++			/>
++			<Tool
++				Name="VCWebDeploymentTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++				Description="Embed .manifest"
++				CommandLine="if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath);2"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Release|Win32"
++			OutputDirectory="$(ConfigurationName)"
++			IntermediateDirectory="$(ConfigurationName)"
++			ConfigurationType="2"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++				PreprocessorDefinitions="NDEBUG"
++				MkTypLibCompatible="true"
++				TargetEnvironment="1"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				Optimization="2"
++				InlineFunctionExpansion="1"
++				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
++				PreprocessorDefinitions="NDEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS"
++				StringPooling="true"
++				RuntimeLibrary="2"
++				EnableFunctionLevelLinking="true"
++				WarningLevel="3"
++				WarnAsError="true"
++				DebugInformationFormat="3"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="NDEBUG,APR_VERSION_ONLY"
++				Culture="1033"
++				AdditionalIncludeDirectories="./include"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLinkerTool"
++				AdditionalDependencies="ws2_32.lib mswsock.lib rpcrt4.lib"
++				OutputFile="$(OutDir)\libapr-1.dll"
++				LinkIncremental="1"
++				GenerateDebugInformation="true"
++				SubSystem="2"
++				OptimizeReferences="2"
++				BaseAddress="0x6EEC0000"
++				TargetMachine="1"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCManifestTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCAppVerifierTool"
++			/>
++			<Tool
++				Name="VCWebDeploymentTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++				Description="Embed .manifest"
++				CommandLine="if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath);2"
++			/>
++		</Configuration>
++		<Configuration
++			Name="Release|x64"
++			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
++			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
++			ConfigurationType="2"
++			UseOfMFC="0"
++			ATLMinimizesCRunTimeLibraryUsage="false"
++			>
++			<Tool
++				Name="VCPreBuildEventTool"
++			/>
++			<Tool
++				Name="VCCustomBuildTool"
++			/>
++			<Tool
++				Name="VCXMLDataGeneratorTool"
++			/>
++			<Tool
++				Name="VCWebServiceProxyGeneratorTool"
++			/>
++			<Tool
++				Name="VCMIDLTool"
++				PreprocessorDefinitions="NDEBUG"
++				MkTypLibCompatible="true"
++				TargetEnvironment="3"
++			/>
++			<Tool
++				Name="VCCLCompilerTool"
++				Optimization="2"
++				InlineFunctionExpansion="1"
++				AdditionalIncludeDirectories="./include,./include/arch,./include/arch/win32,./include/arch/unix"
++				PreprocessorDefinitions="NDEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS"
++				StringPooling="true"
++				RuntimeLibrary="2"
++				EnableFunctionLevelLinking="true"
++				WarningLevel="3"
++				WarnAsError="true"
++				DebugInformationFormat="3"
++			/>
++			<Tool
++				Name="VCManagedResourceCompilerTool"
++			/>
++			<Tool
++				Name="VCResourceCompilerTool"
++				PreprocessorDefinitions="NDEBUG,APR_VERSION_ONLY"
++				Culture="1033"
++				AdditionalIncludeDirectories="./include"
++			/>
++			<Tool
++				Name="VCPreLinkEventTool"
++			/>
++			<Tool
++				Name="VCLinkerTool"
++				AdditionalDependencies="ws2_32.lib mswsock.lib rpcrt4.lib"
++				OutputFile="$(OutDir)\libapr-1.dll"
++				LinkIncremental="1"
++				GenerateDebugInformation="true"
++				SubSystem="2"
++				OptimizeReferences="2"
++				BaseAddress="0x6EEC0000"
++				TargetMachine="17"
++			/>
++			<Tool
++				Name="VCALinkTool"
++			/>
++			<Tool
++				Name="VCManifestTool"
++			/>
++			<Tool
++				Name="VCXDCMakeTool"
++			/>
++			<Tool
++				Name="VCBscMakeTool"
++			/>
++			<Tool
++				Name="VCFxCopTool"
++			/>
++			<Tool
++				Name="VCAppVerifierTool"
++			/>
++			<Tool
++				Name="VCWebDeploymentTool"
++			/>
++			<Tool
++				Name="VCPostBuildEventTool"
++				Description="Embed .manifest"
++				CommandLine="if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath);2"
++			/>
++		</Configuration>
++	</Configurations>
++	<References>
++	</References>
++	<Files>
++		<Filter
++			Name="Source Files"
++			Filter=".c"
++			>
++			<Filter
++				Name="atomic"
++				>
++				<File
++					RelativePath="atomic\win32\apr_atomic.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="dso"
++				>
++				<File
++					RelativePath="dso\win32\dso.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="encoding"
++				>
++				<File
++					RelativePath="encoding\apr_escape.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="file_io"
++				>
++				<File
++					RelativePath="file_io\win32\buffer.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\copy.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\dir.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\fileacc.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\filedup.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\filepath.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\filepath_util.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\filestat.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\filesys.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\flock.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\fullrw.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\mktemp.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\open.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\pipe.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\readwrite.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\win32\seek.c"
++					>
++				</File>
++				<File
++					RelativePath="file_io\unix\tempdir.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="locks"
++				>
++				<File
++					RelativePath="locks\win32\proc_mutex.c"
++					>
++				</File>
++				<File
++					RelativePath="locks\win32\thread_cond.c"
++					>
++				</File>
++				<File
++					RelativePath="locks\win32\thread_mutex.c"
++					>
++				</File>
++				<File
++					RelativePath="locks\win32\thread_rwlock.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="memory"
++				>
++				<File
++					RelativePath="memory\unix\apr_pools.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="misc"
++				>
++				<File
++					RelativePath="misc\win32\apr_app.c"
++					>
++					<FileConfiguration
++						Name="Debug|Win32"
++						ExcludedFromBuild="true"
++						>
++					</FileConfiguration>
++					<FileConfiguration
++						Name="Debug|x64"
++						ExcludedFromBuild="true"
++						>
++					</FileConfiguration>
++					<FileConfiguration
++						Name="Release|Win32"
++						ExcludedFromBuild="true"
++						>
++					</FileConfiguration>
++					<FileConfiguration
++						Name="Release|x64"
++						ExcludedFromBuild="true"
++						>
++					</FileConfiguration>
++				</File>
++				<File
++					RelativePath="misc\win32\charset.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\env.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\unix\errorcodes.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\unix\getopt.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\internal.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\misc.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\unix\otherchild.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\rand.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\start.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\win32\utf8.c"
++					>
++				</File>
++				<File
++					RelativePath="misc\unix\version.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="mmap"
++				>
++				<File
++					RelativePath="mmap\unix\common.c"
++					>
++				</File>
++				<File
++					RelativePath="mmap\win32\mmap.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="network_io"
++				>
++				<File
++					RelativePath="network_io\unix\inet_ntop.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\unix\inet_pton.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\unix\multicast.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\win32\sendrecv.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\unix\sockaddr.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\unix\socket_util.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\win32\sockets.c"
++					>
++				</File>
++				<File
++					RelativePath="network_io\win32\sockopt.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="passwd"
++				>
++				<File
++					RelativePath="passwd\apr_getpass.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="poll"
++				>
++				<File
++					RelativePath="poll\unix\poll.c"
++					>
++				</File>
++				<File
++					RelativePath="poll\unix\pollcb.c"
++					>
++				</File>
++				<File
++					RelativePath="poll\unix\pollset.c"
++					>
++				</File>
++				<File
++					RelativePath="poll\unix\select.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="random"
++				>
++				<File
++					RelativePath="random\unix\apr_random.c"
++					>
++				</File>
++				<File
++					RelativePath="random\unix\sha2.c"
++					>
++				</File>
++				<File
++					RelativePath="random\unix\sha2_glue.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="shmem"
++				>
++				<File
++					RelativePath="shmem\win32\shm.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="strings"
++				>
++				<File
++					RelativePath="strings\apr_cpystrn.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_fnmatch.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_snprintf.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_strings.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_strnatcmp.c"
++					>
++				</File>
++				<File
++					RelativePath="strings\apr_strtok.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="tables"
++				>
++				<File
++					RelativePath="tables\apr_hash.c"
++					>
++				</File>
++				<File
++					RelativePath="tables\apr_skiplist.c"
++					>
++				</File>
++				<File
++					RelativePath="tables\apr_tables.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="threadproc"
++				>
++				<File
++					RelativePath="threadproc\win32\proc.c"
++					>
++				</File>
++				<File
++					RelativePath="threadproc\win32\signals.c"
++					>
++				</File>
++				<File
++					RelativePath="threadproc\win32\thread.c"
++					>
++				</File>
++				<File
++					RelativePath="threadproc\win32\threadpriv.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="time"
++				>
++				<File
++					RelativePath="time\win32\time.c"
++					>
++				</File>
++				<File
++					RelativePath="time\win32\timestr.c"
++					>
++				</File>
++			</Filter>
++			<Filter
++				Name="user"
++				>
++				<File
++					RelativePath="user\win32\groupinfo.c"
++					>
++				</File>
++				<File
++					RelativePath="user\win32\userinfo.c"
++					>
++				</File>
++			</Filter>
++		</Filter>
++		<Filter
++			Name="Private Header Files"
++			>
++			<File
++				RelativePath="include\arch\win32\apr_arch_atime.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_dso.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_file_io.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_inherit.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_misc.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_networkio.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_thread_mutex.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_thread_rwlock.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_threadproc.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_arch_utf8.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\win32\apr_private.h"
++				>
++			</File>
++			<File
++				RelativePath="include\arch\apr_private_common.h"
++				>
++			</File>
++		</Filter>
++		<Filter
++			Name="Public Header Files"
++			>
++			<File
++				RelativePath="include\apr.h.in"
++				>
++				<FileConfiguration
++					Name="Debug|Win32"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Debug|x64"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|Win32"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|x64"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++			</File>
++			<File
++				RelativePath="include\apr.hnw"
++				>
++				<FileConfiguration
++					Name="Debug|Win32"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Debug|x64"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|Win32"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|x64"
++					ExcludedFromBuild="true"
++					>
++				</FileConfiguration>
++			</File>
++			<File
++				RelativePath="include\apr.hw"
++				>
++				<FileConfiguration
++					Name="Debug|Win32"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++						Description="Creating apr.h from apr.hw"
++						CommandLine="type .\include\apr.hw &gt; .\include\apr.h&#x0D;&#x0A;"
++						Outputs=".\include\apr.h"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Debug|x64"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++						Description="Creating apr.h from apr.hw"
++						CommandLine="type .\include\apr.hw &gt; .\include\apr.h&#x0D;&#x0A;"
++						Outputs=".\include\apr.h"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|Win32"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++						Description="Creating apr.h from apr.hw"
++						CommandLine="type .\include\apr.hw &gt; .\include\apr.h&#x0D;&#x0A;"
++						Outputs=".\include\apr.h"
++					/>
++				</FileConfiguration>
++				<FileConfiguration
++					Name="Release|x64"
++					>
++					<Tool
++						Name="VCCustomBuildTool"
++						Description="Creating apr.h from apr.hw"
++						CommandLine="type .\include\apr.hw &gt; .\include\apr.h&#x0D;&#x0A;"
++						Outputs=".\include\apr.h"
++					/>
++				</FileConfiguration>
++			</File>
++			<File
++				RelativePath="include\apr_allocator.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_atomic.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_dso.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_env.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_errno.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_escape.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_file_info.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_file_io.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_fnmatch.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_general.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_getopt.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_global_mutex.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_hash.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_inherit.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_lib.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_mmap.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_network_io.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_poll.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_pools.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_portable.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_proc_mutex.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_random.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_ring.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_shm.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_signal.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_skiplist.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_strings.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_support.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_tables.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_thread_cond.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_thread_mutex.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_thread_proc.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_thread_rwlock.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_time.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_user.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_version.h"
++				>
++			</File>
++			<File
++				RelativePath="include\apr_want.h"
++				>
++			</File>
++		</Filter>
++		<File
++			RelativePath="libapr.rc"
++			>
++		</File>
++	</Files>
++	<Globals>
++	</Globals>
++</VisualStudioProject>
+diff --git a/libapr.vcxproj b/libapr.vcxproj
+new file mode 100644
+index 0000000..cf36012
+--- /dev/null
++++ b/libapr.vcxproj
+@@ -0,0 +1,329 @@
++﻿<?xml version="1.0" encoding="utf-8"?>
++<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ItemGroup Label="ProjectConfigurations">
++    <ProjectConfiguration Include="Debug|Win32">
++      <Configuration>Debug</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Debug|x64">
++      <Configuration>Debug</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|Win32">
++      <Configuration>Release</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|x64">
++      <Configuration>Release</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++  </ItemGroup>
++  <PropertyGroup Label="Globals">
++    <ProjectGuid>{A74881C1-090A-4A0F-AC0E-79F5D3BD872C}</ProjectGuid>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
++  <PropertyGroup Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <UseOfMfc>false</UseOfMfc>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
++  <ImportGroup Label="ExtensionSettings">
++  </ImportGroup>
++  <ImportGroup Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++  </ImportGroup>
++  <PropertyGroup Label="UserMacros" />
++  <PropertyGroup>
++    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
++    <OutDir Condition="'$(Platform)'=='Win32'">$(Configuration)\</OutDir>
++    <OutDir Condition="'$(Platform)'=='x64'">$(Platform)\$(Configuration)\</OutDir>
++    <TargetName>$(ProjectName)-1</TargetName>
++  </PropertyGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
++    <Midl>
++      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MkTypLibCompatible>true</MkTypLibCompatible>
++      <TargetEnvironment>Win32</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <AdditionalOptions>/EHsc  %(AdditionalOptions)</AdditionalOptions>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <WarningLevel>Level3</WarningLevel>
++      <TreatWarningAsError>true</TreatWarningAsError>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>_DEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0409</Culture>
++      <AdditionalIncludeDirectories>./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++    </ResourceCompile>
++    <Link>
++      <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Windows</SubSystem>
++      <BaseAddress>0x6EEC0000</BaseAddress>
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++    <Bscmake />
++    <PostBuildEvent>
++      <Message>Embed .manifest</Message>
++      <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
++    </PostBuildEvent>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <Midl>
++      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MkTypLibCompatible>true</MkTypLibCompatible>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <AdditionalOptions>/EHsc  %(AdditionalOptions)</AdditionalOptions>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <WarningLevel>Level3</WarningLevel>
++      <TreatWarningAsError>true</TreatWarningAsError>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>_DEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0409</Culture>
++      <AdditionalIncludeDirectories>./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++    </ResourceCompile>
++    <Link>
++      <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Windows</SubSystem>
++      <BaseAddress>0x6EEC0000</BaseAddress>
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++    <Bscmake />
++    <PostBuildEvent>
++      <Message>Embed .manifest</Message>
++      <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
++    </PostBuildEvent>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
++    <Midl>
++      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MkTypLibCompatible>true</MkTypLibCompatible>
++      <TargetEnvironment>Win32</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
++      <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <FunctionLevelLinking>true</FunctionLevelLinking>
++      <WarningLevel>Level3</WarningLevel>
++      <TreatWarningAsError>true</TreatWarningAsError>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>NDEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0409</Culture>
++      <AdditionalIncludeDirectories>./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++    </ResourceCompile>
++    <Link>
++      <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Windows</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <BaseAddress>0x6EEC0000</BaseAddress>
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++    <Bscmake />
++    <PostBuildEvent>
++      <Message>Embed .manifest</Message>
++      <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
++    </PostBuildEvent>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <Midl>
++      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MkTypLibCompatible>true</MkTypLibCompatible>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
++      <AdditionalIncludeDirectories>./include;./include/arch;./include/arch/win32;./include/arch/unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_EXPORT;WIN32;WINNT;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <FunctionLevelLinking>true</FunctionLevelLinking>
++      <WarningLevel>Level3</WarningLevel>
++      <TreatWarningAsError>true</TreatWarningAsError>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>NDEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0409</Culture>
++      <AdditionalIncludeDirectories>./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++    </ResourceCompile>
++    <Link>
++      <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Windows</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <BaseAddress>0x6EEC0000</BaseAddress>
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++    <Bscmake />
++    <PostBuildEvent>
++      <Message>Embed .manifest</Message>
++      <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
++    </PostBuildEvent>
++  </ItemDefinitionGroup>
++  <ItemGroup>
++    <ClCompile Include="atomic\win32\apr_atomic.c" />
++    <ClCompile Include="dso\win32\dso.c" />
++    <ClCompile Include="encoding\apr_escape.c" />
++    <ClCompile Include="file_io\win32\buffer.c" />
++    <ClCompile Include="file_io\unix\copy.c" />
++    <ClCompile Include="file_io\win32\dir.c" />
++    <ClCompile Include="file_io\unix\fileacc.c" />
++    <ClCompile Include="file_io\win32\filedup.c" />
++    <ClCompile Include="file_io\win32\filepath.c" />
++    <ClCompile Include="file_io\unix\filepath_util.c" />
++    <ClCompile Include="file_io\win32\filestat.c" />
++    <ClCompile Include="file_io\win32\filesys.c" />
++    <ClCompile Include="file_io\win32\flock.c" />
++    <ClCompile Include="file_io\unix\fullrw.c" />
++    <ClCompile Include="file_io\unix\mktemp.c" />
++    <ClCompile Include="file_io\win32\open.c" />
++    <ClCompile Include="file_io\win32\pipe.c" />
++    <ClCompile Include="file_io\win32\readwrite.c" />
++    <ClCompile Include="file_io\win32\seek.c" />
++    <ClCompile Include="file_io\unix\tempdir.c" />
++    <ClCompile Include="locks\win32\proc_mutex.c" />
++    <ClCompile Include="locks\win32\thread_cond.c" />
++    <ClCompile Include="locks\win32\thread_mutex.c" />
++    <ClCompile Include="locks\win32\thread_rwlock.c" />
++    <ClCompile Include="memory\unix\apr_pools.c" />
++    <ClCompile Include="misc\win32\apr_app.c">
++      <ExcludedFromBuild>true</ExcludedFromBuild>
++    </ClCompile>
++    <ClCompile Include="misc\win32\charset.c" />
++    <ClCompile Include="misc\win32\env.c" />
++    <ClCompile Include="misc\unix\errorcodes.c" />
++    <ClCompile Include="misc\unix\getopt.c" />
++    <ClCompile Include="misc\win32\internal.c" />
++    <ClCompile Include="misc\win32\misc.c" />
++    <ClCompile Include="misc\unix\otherchild.c" />
++    <ClCompile Include="misc\win32\rand.c" />
++    <ClCompile Include="misc\win32\start.c" />
++    <ClCompile Include="misc\win32\utf8.c" />
++    <ClCompile Include="misc\unix\version.c" />
++    <ClCompile Include="mmap\unix\common.c" />
++    <ClCompile Include="mmap\win32\mmap.c" />
++    <ClCompile Include="network_io\unix\inet_ntop.c" />
++    <ClCompile Include="network_io\unix\inet_pton.c" />
++    <ClCompile Include="network_io\unix\multicast.c" />
++    <ClCompile Include="network_io\win32\sendrecv.c" />
++    <ClCompile Include="network_io\unix\sockaddr.c" />
++    <ClCompile Include="network_io\unix\socket_util.c" />
++    <ClCompile Include="network_io\win32\sockets.c" />
++    <ClCompile Include="network_io\win32\sockopt.c" />
++    <ClCompile Include="passwd\apr_getpass.c" />
++    <ClCompile Include="poll\unix\poll.c" />
++    <ClCompile Include="poll\unix\pollcb.c" />
++    <ClCompile Include="poll\unix\pollset.c" />
++    <ClCompile Include="poll\unix\select.c" />
++    <ClCompile Include="random\unix\apr_random.c" />
++    <ClCompile Include="random\unix\sha2.c" />
++    <ClCompile Include="random\unix\sha2_glue.c" />
++    <ClCompile Include="shmem\win32\shm.c" />
++    <ClCompile Include="strings\apr_cpystrn.c" />
++    <ClCompile Include="strings\apr_fnmatch.c" />
++    <ClCompile Include="strings\apr_snprintf.c" />
++    <ClCompile Include="strings\apr_strings.c" />
++    <ClCompile Include="strings\apr_strnatcmp.c" />
++    <ClCompile Include="strings\apr_strtok.c" />
++    <ClCompile Include="tables\apr_hash.c" />
++    <ClCompile Include="tables\apr_tables.c" />
++    <ClCompile Include="tables\apr_skiplist.c" />
++    <ClCompile Include="threadproc\win32\proc.c" />
++    <ClCompile Include="threadproc\win32\signals.c" />
++    <ClCompile Include="threadproc\win32\thread.c" />
++    <ClCompile Include="threadproc\win32\threadpriv.c" />
++    <ClCompile Include="time\win32\time.c" />
++    <ClCompile Include="time\win32\timestr.c" />
++    <ClCompile Include="user\win32\groupinfo.c" />
++    <ClCompile Include="user\win32\userinfo.c" />
++  </ItemGroup>
++  <ItemGroup>
++    <ClInclude Include="include\arch\win32\apr_arch_atime.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_dso.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_file_io.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_inherit.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_misc.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_networkio.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_thread_mutex.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_thread_rwlock.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_threadproc.h" />
++    <ClInclude Include="include\arch\win32\apr_arch_utf8.h" />
++    <ClInclude Include="include\arch\win32\apr_private.h" />
++    <ClInclude Include="include\arch\apr_private_common.h" />
++    <ClInclude Include="include\apr_allocator.h" />
++    <ClInclude Include="include\apr_atomic.h" />
++    <ClInclude Include="include\apr_dso.h" />
++    <ClInclude Include="include\apr_env.h" />
++    <ClInclude Include="include\apr_errno.h" />
++    <ClInclude Include="include\apr_escape.h" />
++    <ClInclude Include="include\apr_file_info.h" />
++    <ClInclude Include="include\apr_file_io.h" />
++    <ClInclude Include="include\apr_fnmatch.h" />
++    <ClInclude Include="include\apr_general.h" />
++    <ClInclude Include="include\apr_getopt.h" />
++    <ClInclude Include="include\apr_global_mutex.h" />
++    <ClInclude Include="include\apr_hash.h" />
++    <ClInclude Include="include\apr_inherit.h" />
++    <ClInclude Include="include\apr_lib.h" />
++    <ClInclude Include="include\apr_mmap.h" />
++    <ClInclude Include="include\apr_network_io.h" />
++    <ClInclude Include="include\apr_poll.h" />
++    <ClInclude Include="include\apr_pools.h" />
++    <ClInclude Include="include\apr_portable.h" />
++    <ClInclude Include="include\apr_proc_mutex.h" />
++    <ClInclude Include="include\apr_random.h" />
++    <ClInclude Include="include\apr_ring.h" />
++    <ClInclude Include="include\apr_shm.h" />
++    <ClInclude Include="include\apr_signal.h" />
++    <ClInclude Include="include\apr_skiplist.h" />
++    <ClInclude Include="include\apr_strings.h" />
++    <ClInclude Include="include\apr_support.h" />
++    <ClInclude Include="include\apr_tables.h" />
++    <ClInclude Include="include\apr_thread_cond.h" />
++    <ClInclude Include="include\apr_thread_mutex.h" />
++    <ClInclude Include="include\apr_thread_proc.h" />
++    <ClInclude Include="include\apr_thread_rwlock.h" />
++    <ClInclude Include="include\apr_time.h" />
++    <ClInclude Include="include\apr_user.h" />
++    <ClInclude Include="include\apr_version.h" />
++    <ClInclude Include="include\apr_want.h" />
++  </ItemGroup>
++  <ItemGroup>
++    <CustomBuild Include="include\apr.h.in">
++      <FileType>Document</FileType>
++      <ExcludedFromBuild>true</ExcludedFromBuild>
++    </CustomBuild>
++    <CustomBuild Include="include\apr.hnw">
++      <FileType>Document</FileType>
++      <ExcludedFromBuild>true</ExcludedFromBuild>
++    </CustomBuild>
++    <CustomBuild Include="include\apr.hw">
++      <Message>Creating apr.h from apr.hw</Message>
++      <Command>type .\include\apr.hw &gt; .\include\apr.h</Command>
++      <Outputs>.\include\apr.h;%(Outputs)</Outputs>
++    </CustomBuild>
++  </ItemGroup>
++  <ItemGroup>
++    <ResourceCompile Include="libapr.rc" />
++  </ItemGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
++  <ImportGroup Label="ExtensionTargets">
++  </ImportGroup>
++</Project>
+\ No newline at end of file
+diff --git a/libapr.vcxproj.filters b/libapr.vcxproj.filters
+new file mode 100644
+index 0000000..a1372df
+--- /dev/null
++++ b/libapr.vcxproj.filters
+@@ -0,0 +1,453 @@
++﻿<?xml version="1.0" encoding="utf-8"?>
++<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ItemGroup>
++    <Filter Include="Source Files">
++      <UniqueIdentifier>{fca78b9c-d1a4-419c-9ce8-a847599c5b81}</UniqueIdentifier>
++      <Extensions>.c</Extensions>
++    </Filter>
++    <Filter Include="Source Files\atomic">
++      <UniqueIdentifier>{580ae073-b6a4-4c84-a0ee-25339850c20c}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\dso">
++      <UniqueIdentifier>{1914fc62-bca8-4c95-a7aa-1ed1b95b041c}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\encoding">
++      <UniqueIdentifier>{a5e85d72-d27f-45ad-b679-f1b7fb1c6f9e}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\file_io">
++      <UniqueIdentifier>{75df7b0a-7ce2-4b34-84b3-71477fc13064}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\locks">
++      <UniqueIdentifier>{e8d8eafd-2545-4253-8b51-916e553cfd99}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\memory">
++      <UniqueIdentifier>{d10a57fe-473d-474b-8845-30451ef5965a}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\misc">
++      <UniqueIdentifier>{5d3d3099-20b0-4466-b186-98a64dca67be}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\mmap">
++      <UniqueIdentifier>{e29a3e29-24b4-486c-a586-1ee1a1c859af}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\network_io">
++      <UniqueIdentifier>{7ac8a781-c05c-4d02-aca7-2d5aa3ae34b3}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\passwd">
++      <UniqueIdentifier>{f6e52156-4708-4052-bd7c-9d0259d28d4f}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\poll">
++      <UniqueIdentifier>{c88cdfd9-1bfc-4e5a-98ac-2aaa450e3c87}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\random">
++      <UniqueIdentifier>{c84a2f2c-7fa4-4fd2-a6ff-095d26a2c05f}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\shmem">
++      <UniqueIdentifier>{0e13fedd-a21b-4031-bf36-054dde23d207}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\strings">
++      <UniqueIdentifier>{b0d56624-0fab-4857-ae7e-49e23fcacf7e}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\tables">
++      <UniqueIdentifier>{5162b8fb-2f00-434a-8450-4a6631d06f2e}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\threadproc">
++      <UniqueIdentifier>{15b10c80-a75d-45d9-aaca-cb3893376359}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\time">
++      <UniqueIdentifier>{aae1ca90-01b9-4dc1-8e08-bdf173695e9f}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Source Files\user">
++      <UniqueIdentifier>{e21385d0-0d3d-441b-9d4e-ce671c5d2770}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Private Header Files">
++      <UniqueIdentifier>{9e9c4ea0-05f3-462b-82ca-6c654f9991e6}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="Public Header Files">
++      <UniqueIdentifier>{8d8fa696-e4ad-4483-9d7a-42f3e8e954a3}</UniqueIdentifier>
++    </Filter>
++  </ItemGroup>
++  <ItemGroup>
++    <ClCompile Include="atomic\win32\apr_atomic.c">
++      <Filter>Source Files\atomic</Filter>
++    </ClCompile>
++    <ClCompile Include="dso\win32\dso.c">
++      <Filter>Source Files\dso</Filter>
++    </ClCompile>
++    <ClCompile Include="encoding\apr_escape.c">
++      <Filter>Source Files\encoding</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\buffer.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\copy.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\dir.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\fileacc.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\filedup.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\filepath.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\filepath_util.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\filestat.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\filesys.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\flock.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\fullrw.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\mktemp.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\open.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\pipe.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\readwrite.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\win32\seek.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="file_io\unix\tempdir.c">
++      <Filter>Source Files\file_io</Filter>
++    </ClCompile>
++    <ClCompile Include="locks\win32\proc_mutex.c">
++      <Filter>Source Files\locks</Filter>
++    </ClCompile>
++    <ClCompile Include="locks\win32\thread_cond.c">
++      <Filter>Source Files\locks</Filter>
++    </ClCompile>
++    <ClCompile Include="locks\win32\thread_mutex.c">
++      <Filter>Source Files\locks</Filter>
++    </ClCompile>
++    <ClCompile Include="locks\win32\thread_rwlock.c">
++      <Filter>Source Files\locks</Filter>
++    </ClCompile>
++    <ClCompile Include="memory\unix\apr_pools.c">
++      <Filter>Source Files\memory</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\apr_app.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\charset.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\env.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\unix\errorcodes.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\unix\getopt.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\internal.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\misc.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\unix\otherchild.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\rand.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\start.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\win32\utf8.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="misc\unix\version.c">
++      <Filter>Source Files\misc</Filter>
++    </ClCompile>
++    <ClCompile Include="mmap\unix\common.c">
++      <Filter>Source Files\mmap</Filter>
++    </ClCompile>
++    <ClCompile Include="mmap\win32\mmap.c">
++      <Filter>Source Files\mmap</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\inet_ntop.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\inet_pton.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\multicast.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\win32\sendrecv.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\sockaddr.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\unix\socket_util.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\win32\sockets.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="network_io\win32\sockopt.c">
++      <Filter>Source Files\network_io</Filter>
++    </ClCompile>
++    <ClCompile Include="passwd\apr_getpass.c">
++      <Filter>Source Files\passwd</Filter>
++    </ClCompile>
++    <ClCompile Include="poll\unix\poll.c">
++      <Filter>Source Files\poll</Filter>
++    </ClCompile>
++    <ClCompile Include="poll\unix\pollcb.c">
++      <Filter>Source Files\poll</Filter>
++    </ClCompile>
++    <ClCompile Include="poll\unix\pollset.c">
++      <Filter>Source Files\poll</Filter>
++    </ClCompile>
++    <ClCompile Include="poll\unix\select.c">
++      <Filter>Source Files\poll</Filter>
++    </ClCompile>
++    <ClCompile Include="random\unix\apr_random.c">
++      <Filter>Source Files\random</Filter>
++    </ClCompile>
++    <ClCompile Include="random\unix\sha2.c">
++      <Filter>Source Files\random</Filter>
++    </ClCompile>
++    <ClCompile Include="random\unix\sha2_glue.c">
++      <Filter>Source Files\random</Filter>
++    </ClCompile>
++    <ClCompile Include="shmem\win32\shm.c">
++      <Filter>Source Files\shmem</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_cpystrn.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_fnmatch.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_snprintf.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_strings.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_strnatcmp.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="strings\apr_strtok.c">
++      <Filter>Source Files\strings</Filter>
++    </ClCompile>
++    <ClCompile Include="tables\apr_hash.c">
++      <Filter>Source Files\tables</Filter>
++    </ClCompile>
++    <ClCompile Include="tables\apr_tables.c">
++      <Filter>Source Files\tables</Filter>
++    </ClCompile>
++    <ClCompile Include="tables\apr_skiplist.c">
++      <Filter>Source Files\tables</Filter>
++    </ClCompile>
++    <ClCompile Include="threadproc\win32\proc.c">
++      <Filter>Source Files\threadproc</Filter>
++    </ClCompile>
++    <ClCompile Include="threadproc\win32\signals.c">
++      <Filter>Source Files\threadproc</Filter>
++    </ClCompile>
++    <ClCompile Include="threadproc\win32\thread.c">
++      <Filter>Source Files\threadproc</Filter>
++    </ClCompile>
++    <ClCompile Include="threadproc\win32\threadpriv.c">
++      <Filter>Source Files\threadproc</Filter>
++    </ClCompile>
++    <ClCompile Include="time\win32\time.c">
++      <Filter>Source Files\time</Filter>
++    </ClCompile>
++    <ClCompile Include="time\win32\timestr.c">
++      <Filter>Source Files\time</Filter>
++    </ClCompile>
++    <ClCompile Include="user\win32\groupinfo.c">
++      <Filter>Source Files\user</Filter>
++    </ClCompile>
++    <ClCompile Include="user\win32\userinfo.c">
++      <Filter>Source Files\user</Filter>
++    </ClCompile>
++  </ItemGroup>
++  <ItemGroup>
++    <ClInclude Include="include\arch\win32\apr_arch_atime.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_dso.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_file_io.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_inherit.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_misc.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_networkio.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_thread_mutex.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_thread_rwlock.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_threadproc.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_arch_utf8.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\win32\apr_private.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\arch\apr_private_common.h">
++      <Filter>Private Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_allocator.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_atomic.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_dso.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_env.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_errno.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_escape.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_file_info.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_file_io.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_fnmatch.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_general.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_getopt.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_global_mutex.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_hash.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_inherit.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_lib.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_mmap.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_network_io.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_poll.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_pools.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_portable.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_proc_mutex.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_random.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_ring.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_shm.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_signal.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_skiplist.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_strings.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_support.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_tables.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_thread_cond.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_thread_mutex.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_thread_proc.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_thread_rwlock.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_time.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_user.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_version.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++    <ClInclude Include="include\apr_want.h">
++      <Filter>Public Header Files</Filter>
++    </ClInclude>
++  </ItemGroup>
++  <ItemGroup>
++    <ResourceCompile Include="libapr.rc" />
++  </ItemGroup>
++  <ItemGroup>
++    <CustomBuild Include="include\apr.h.in">
++      <Filter>Public Header Files</Filter>
++    </CustomBuild>
++    <CustomBuild Include="include\apr.hnw">
++      <Filter>Public Header Files</Filter>
++    </CustomBuild>
++    <CustomBuild Include="include\apr.hw">
++      <Filter>Public Header Files</Filter>
++    </CustomBuild>
++  </ItemGroup>
++</Project>
+\ No newline at end of file
+-- 
+2.8.1.windows.1
+

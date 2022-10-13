@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package smartspeech.recognition.v1;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/sberdevices/smartspeech/recognition/v1;recognition";
+option java_package = "ru.sberdevices.smartspeech.recognition.v1";
+
+service SmartSpeech {
+  rpc Recognize (stream RecognitionRequest) returns (stream RecognitionResponse) {
+  }
+}
+
+message RecognitionRequest {
+  oneof request {
+    RecognitionOptions options = 1;
+    bytes audio_chunk = 2;
+  }
+}
+
+message RecognitionResponse {
+  repeated Hypothesis results = 1;
+  bool eou = 2;  // marks final result for this utterance
+  Emotions emotions_result = 3;  // may be set on end of utterance
+  google.protobuf.Duration processed_audio_start = 4;  // starting position of processed audio
+  google.protobuf.Duration processed_audio_end = 5;  // ending position of processed audio
+  BackendInfo backend_info = 6;
+}
+
+message Hints {
+  repeated string words = 1;
+  bool enable_letters = 2;
+  google.protobuf.Duration eou_timeout = 3;
+}
+
+message RecognitionOptions {
+  enum AudioEncoding {
+    AUDIO_ENCODING_UNSPECIFIED = 0;
+    PCM_S16LE = 1;    // 16-bit signed little-endian (Linear PCM)
+    OPUS = 2;    // mime audio/ogg; codecs=opus
+  }
+
+  AudioEncoding audio_encoding = 1;
+  int32 sample_rate = 2;  // Only for PCM_16LE audio encoding
+  string language = 3;  // Language code in RFC-xxxx format, i.e.: ru-RU
+  string model = 4;
+  int32 hypotheses_count = 5;
+  Hints hints = 6;
+  bool enable_profanity_filter = 7;
+  bool enable_multi_utterance = 8;
+  bool enable_partial_results = 9;
+  google.protobuf.Duration no_speech_timeout = 10;
+  google.protobuf.Duration max_speech_timeout = 11;
+}
+
+message Hypothesis {
+  string text = 1;  // non-normalized text result
+  string normalized_text = 2;  // normalized text result
+  google.protobuf.Duration start = 3;  // hypothesis starting position from current utterance start
+  google.protobuf.Duration end = 4;  // hypothesis final position from current utterance start
+}
+
+message Emotions {
+  float positive = 1;  // confidence [0.0 - 1.0]
+  float neutral = 2;
+  float negative = 3;
+}
+
+message BackendInfo {
+  string model_name = 1;
+  string model_version = 2;
+  string server_version = 3;
+}

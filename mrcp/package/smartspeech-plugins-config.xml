@@ -1,0 +1,14 @@
+<engine id="recognition-smartspeech" name="smartspeech-recognition-plugin" enable="true">
+  <param name="smartspeech-url" value="smartspeech.sber.ru"/>
+  <param name="smartmarket-url" value="https://salute.online.sberbank.ru:9443"/>
+  <param name="smartmarket-client-id" value="__CLIENT_ID__"/>
+  <param name="smartmarket-secret" value="__SECRET__"/>
+  <param name="smartmarket-scope" value="__SCOPE__"/>
+</engine>
+<engine id="synthesis-smartspeech" name="smartspeech-synthesis-plugin" enable="false">
+  <param name="smartspeech-url" value="smartspeech.sber.ru"/>
+  <param name="smartmarket-url" value="https://salute.online.sberbank.ru:9443"/>
+  <param name="smartmarket-client-id" value="__CLIENT_ID__"/>
+  <param name="smartmarket-secret" value="__SECRET__"/>
+  <param name="smartmarket-scope" value="__SCOPE__"/>
+</engine>

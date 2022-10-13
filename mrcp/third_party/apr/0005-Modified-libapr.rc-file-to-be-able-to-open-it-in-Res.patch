@@ -1,0 +1,174 @@
+From 7c842f7735134c95faac5966a1f631f82f6c17b5 Mon Sep 17 00:00:00 2001
+From: Arsen Chaloyan <achaloyan@gmail.com>
+Date: Wed, 27 Nov 2013 17:07:44 -0800
+Subject: [PATCH 5/6] Modified libapr.rc file to be able to open it in Resource
+ View.
+
+---
+ libapr.rc              |  8 ++++++++
+ libapr.vcproj          | 18 +++++++++++-------
+ libapr.vcxproj         |  8 ++++----
+ libapr.vcxproj.filters | 11 ++++++++---
+ 4 files changed, 31 insertions(+), 14 deletions(-)
+
+diff --git a/libapr.rc b/libapr.rc
+index 604fc7c..353ec30 100644
+--- a/libapr.rc
++++ b/libapr.rc
+@@ -1,5 +1,12 @@
++#define APR_VERSION_ONLY
+ #include "apr_version.h"
+ 
++#ifdef APSTUDIO_INVOKED
++#define APR_LICENSE \
++  "Licensed to the Apache Software Foundation (ASF) under one or more " \
++  "contributor license agreements.  See the NOTICE file distributed with " \
++  "this work for additional information regarding copyright ownership."
++#else
+ #define APR_LICENSE \
+   "Licensed to the Apache Software Foundation (ASF) under one or more " \
+   "contributor license agreements.  See the NOTICE file distributed with " \
+@@ -13,6 +20,7 @@
+   "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  " \
+   "See the License for the specific language governing permissions and " \
+   "limitations under the License."
++#endif
+ 
+ #define APR_DLL_BASENAME "libapr-" APR_STRINGIFY(APR_MAJOR_VERSION)
+ 
+diff --git a/libapr.vcproj b/libapr.vcproj
+index d702671..112aa3c 100644
+--- a/libapr.vcproj
++++ b/libapr.vcproj
+@@ -58,7 +58,7 @@
+ 			/>
+ 			<Tool
+ 				Name="VCResourceCompilerTool"
+-				PreprocessorDefinitions="_DEBUG,APR_VERSION_ONLY"
++				PreprocessorDefinitions="_DEBUG"
+ 				Culture="1033"
+ 				AdditionalIncludeDirectories="./include"
+ 			/>
+@@ -144,7 +144,7 @@
+ 			/>
+ 			<Tool
+ 				Name="VCResourceCompilerTool"
+-				PreprocessorDefinitions="_DEBUG,APR_VERSION_ONLY"
++				PreprocessorDefinitions="_DEBUG"
+ 				Culture="1033"
+ 				AdditionalIncludeDirectories="./include"
+ 			/>
+@@ -232,7 +232,7 @@
+ 			/>
+ 			<Tool
+ 				Name="VCResourceCompilerTool"
+-				PreprocessorDefinitions="NDEBUG,APR_VERSION_ONLY"
++				PreprocessorDefinitions="NDEBUG"
+ 				Culture="1033"
+ 				AdditionalIncludeDirectories="./include"
+ 			/>
+@@ -321,7 +321,7 @@
+ 			/>
+ 			<Tool
+ 				Name="VCResourceCompilerTool"
+-				PreprocessorDefinitions="NDEBUG,APR_VERSION_ONLY"
++				PreprocessorDefinitions="NDEBUG"
+ 				Culture="1033"
+ 				AdditionalIncludeDirectories="./include"
+ 			/>
+@@ -1055,10 +1055,14 @@
+ 				>
+ 			</File>
+ 		</Filter>
+-		<File
+-			RelativePath="libapr.rc"
++		<Filter
++			Name="Resource Files"
+ 			>
+-		</File>
++			<File
++				RelativePath="libapr.rc"
++				>
++			</File>
++		</Filter>
+ 	</Files>
+ 	<Globals>
+ 	</Globals>
+diff --git a/libapr.vcxproj b/libapr.vcxproj
+index cf36012..a89a094 100644
+--- a/libapr.vcxproj
++++ b/libapr.vcxproj
+@@ -55,7 +55,7 @@
+       <TreatWarningAsError>true</TreatWarningAsError>
+     </ClCompile>
+     <ResourceCompile>
+-      <PreprocessorDefinitions>_DEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <Culture>0x0409</Culture>
+       <AdditionalIncludeDirectories>./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+     </ResourceCompile>
+@@ -88,7 +88,7 @@
+       <TreatWarningAsError>true</TreatWarningAsError>
+     </ClCompile>
+     <ResourceCompile>
+-      <PreprocessorDefinitions>_DEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <Culture>0x0409</Culture>
+       <AdditionalIncludeDirectories>./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+     </ResourceCompile>
+@@ -123,7 +123,7 @@
+       <TreatWarningAsError>true</TreatWarningAsError>
+     </ClCompile>
+     <ResourceCompile>
+-      <PreprocessorDefinitions>NDEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <Culture>0x0409</Culture>
+       <AdditionalIncludeDirectories>./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+     </ResourceCompile>
+@@ -159,7 +159,7 @@
+       <TreatWarningAsError>true</TreatWarningAsError>
+     </ClCompile>
+     <ResourceCompile>
+-      <PreprocessorDefinitions>NDEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <Culture>0x0409</Culture>
+       <AdditionalIncludeDirectories>./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+     </ResourceCompile>
+diff --git a/libapr.vcxproj.filters b/libapr.vcxproj.filters
+index a1372df..20c67bd 100644
+--- a/libapr.vcxproj.filters
++++ b/libapr.vcxproj.filters
+@@ -65,6 +65,9 @@
+     <Filter Include="Public Header Files">
+       <UniqueIdentifier>{8d8fa696-e4ad-4483-9d7a-42f3e8e954a3}</UniqueIdentifier>
+     </Filter>
++    <Filter Include="Resource Files">
++      <UniqueIdentifier>{91879564-628b-474e-8f26-fdb283c7165f}</UniqueIdentifier>
++    </Filter>
+   </ItemGroup>
+   <ItemGroup>
+     <ClCompile Include="atomic\win32\apr_atomic.c">
+@@ -437,9 +440,6 @@
+     </ClInclude>
+   </ItemGroup>
+   <ItemGroup>
+-    <ResourceCompile Include="libapr.rc" />
+-  </ItemGroup>
+-  <ItemGroup>
+     <CustomBuild Include="include\apr.h.in">
+       <Filter>Public Header Files</Filter>
+     </CustomBuild>
+@@ -450,4 +450,9 @@
+       <Filter>Public Header Files</Filter>
+     </CustomBuild>
+   </ItemGroup>
++  <ItemGroup>
++    <ResourceCompile Include="libapr.rc">
++      <Filter>Resource Files</Filter>
++    </ResourceCompile>
++  </ItemGroup>
+ </Project>
+\ No newline at end of file
+-- 
+2.8.1.windows.1
+

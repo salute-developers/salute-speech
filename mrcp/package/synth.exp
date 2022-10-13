@@ -1,0 +1,18 @@
+#!/usr/bin/expect
+
+set timeout 120
+spawn "./umc"
+# wait for umc initialization and start synth
+expect -re {^.*MRCP Client Started.*}
+send "run synth\r"
+
+# get audio file name
+expect -re {^.*Open Speech Output File \[(.*)\] for Writing}
+set audio_file_path $expect_out(1,string)
+
+# wait for synthesis complete
+expect -re {^.*Destroy MRCP Handle.*}
+
+spawn cp $audio_file_path /src/output/
+expect eof
+
