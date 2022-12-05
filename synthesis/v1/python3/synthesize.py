@@ -38,7 +38,7 @@ def synthesize(args):
 
     channel = grpc.secure_channel(
         args.host,
-        grpc.composite_channel_credentials(ssl_cred, token_cred),
+        grpc.composite_channel_credentials(ssl_cred, token_cred)
     )
 
     stub = synthesis_pb2_grpc.SmartSpeechStub(channel)
@@ -62,7 +62,7 @@ def synthesize(args):
 
 
 class Arguments:
-    NOT_SYNTHESIS_OPTIONS = {'host', 'token', 'file'}
+    NOT_SYNTHESIS_OPTIONS = {'host', 'token', 'file', 'ca'}
 
     def __init__(self):
         super().__setattr__('synthesis_options', synthesis_pb2.SynthesisRequest())
@@ -74,12 +74,12 @@ class Arguments:
             setattr(self.synthesis_options, key, value)
 
 
-def main():
+def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--host', default='smartspeech.sber.ru', help='host:port of gRPC endpoint')
     parser.add_argument('--token', required=True, default=argparse.SUPPRESS, help='access token')
-    parser.add_argument('--file', required=True, default=argparse.SUPPRESS, help='audio file for recognition')
+    parser.add_argument('--file', required=True, default=argparse.SUPPRESS, help='output audio file')
 
     parser.add_argument('--ca', help='CA certificate file name (TLS)')
 
@@ -89,9 +89,13 @@ def main():
     parser.add_argument('--language', default='ru-RU', help=' ')
     parser.add_argument('--voice', default='May_24000', help=' ')
 
-    args = parser.parse_args(namespace=Arguments())
+    return parser
 
-    synthesize(args)
+
+def main():
+    parser = create_parser()
+
+    synthesize(parser.parse_args(namespace=Arguments()))
 
 
 if __name__ == '__main__':

@@ -86,7 +86,7 @@ def recognize(args):
 
 
 class Arguments:
-    NOT_RECOGNITION_OPTIONS = {'host', 'token', 'file', 'normalized_result', 'emotions_result', 'metadata'}
+    NOT_RECOGNITION_OPTIONS = {'host', 'token', 'file', 'normalized_result', 'emotions_result', 'metadata', 'ca'}
     DURATIONS = {'no_speech_timeout', 'max_speech_timeout', 'eou_timeout'}
     REPEATED = {'words'}
     HINTS_PREFIX = 'hints_'
