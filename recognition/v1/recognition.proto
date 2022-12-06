@@ -22,6 +22,13 @@ message RecognitionRequest {
   }
 }
 
+enum EouReason {
+  UNSPECIFIED = 0; // Not an EOU
+  ORGANIC = 1; // Proper EOU
+  NO_SPEECH_TIMEOUT = 2;  // EOU because there was no speech for at least no_speech_timeout seconds
+  MAX_SPEECH_TIMEOUT = 3;	// EOU because there was continuous speech with no breaks for at least max_speech_timeout seconds
+}
+
 message RecognitionResponse {
   repeated Hypothesis results = 1;
   bool eou = 2;  // marks final result for this utterance
@@ -31,6 +38,7 @@ message RecognitionResponse {
   BackendInfo backend_info = 6;
   int32 channel = 7;
   SpeakerInfo speaker_info = 8;
+  EouReason eou_reason = 9; // what caused the end of this utterance (eou must be true)
 }
 
 message AsyncRecognizeRequest {

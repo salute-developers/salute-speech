@@ -2,14 +2,17 @@ syntax = "proto3";
 
 package smartspeech.synthesis.v1;
 
+import "task.proto";
+
 import "google/protobuf/duration.proto";
 
-option go_package = "github.com/sberdevices/smartspeech/synthesis/v1;synthesis";
-option java_package = "ru.sberdevices.smartspeech.synthesis.v1";
+option go_package = "./;protocol";
+option java_package = "TODO";
 
 service SmartSpeech {
-  rpc Synthesize (SynthesisRequest) returns (stream SynthesisResponse) {
-  }
+  rpc Synthesize (SynthesisRequest) returns (stream SynthesisResponse);
+
+  rpc AsyncSynthesize (AsyncSynthesisRequest) returns (smartspeech.task.v1.Task);
 }
 
 message SynthesisRequest {
@@ -27,12 +30,19 @@ message SynthesisRequest {
 
   string text = 1;
   AudioEncoding audio_encoding = 2;
-  string language = 3;
+  string language = 3; // Language code in RFC-3066 format, i.e.: ru-RU
   ContentType content_type = 4;
   string voice = 5;
+  bool rebuild_cache = 6;
 }
 
 message SynthesisResponse {
   bytes data = 1; // chunk of audio data
   google.protobuf.Duration audio_duration = 2; // time from start of audio so far
+}
+
+message AsyncSynthesisRequest {
+  string request_file_id = 1;
+  SynthesisRequest.AudioEncoding audio_encoding = 2;
+  string voice = 3;
 }
