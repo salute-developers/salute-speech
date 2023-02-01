@@ -10,7 +10,7 @@ import storage_pb2
 import storage_pb2_grpc
 import task_pb2
 import task_pb2_grpc
-from synthesize import Arguments, create_parser
+from synthesize import Arguments, create_parser, ENCODING_OPUS
 
 
 SLEEP_TIME = 5
@@ -82,8 +82,8 @@ def synthesize_async(args):
 
 
 def main():
-    parser = create_parser()
-    Arguments.NOT_SYNTHESIS_OPTIONS.update({'text'})
+    parser = create_parser([ENCODING_OPUS])
+    Arguments.NOT_SYNTHESIS_OPTIONS.update({'text', 'audio_encoding', 'voice'})
 
     synthesize_async(parser.parse_args(namespace=Arguments()))
 

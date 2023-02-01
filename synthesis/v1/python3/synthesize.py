@@ -74,7 +74,7 @@ class Arguments:
             setattr(self.synthesis_options, key, value)
 
 
-def create_parser():
+def create_parser(encodings=None):
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--host', default='smartspeech.sber.ru', help='host:port of gRPC endpoint')
@@ -83,8 +83,10 @@ def create_parser():
 
     parser.add_argument('--ca', help='CA certificate file name (TLS)')
 
-    parser.add_argument('--text', required=True, default='')
-    parser.add_argument('--audio-encoding', default=ENCODINGS_MAP[ENCODING_WAV], type=lambda x: ENCODINGS_MAP[x], help=','.join(ENCODINGS_MAP))
+    parser.add_argument('--text', required=True, default='', help='input text')
+
+    default_encoding = ENCODING_WAV if ENCODING_WAV in encodings else encodings[0]
+    parser.add_argument('--audio-encoding', default=ENCODINGS_MAP[default_encoding], type=lambda x: ENCODINGS_MAP[x], help=','.join(encodings or ENCODINGS_MAP))
     parser.add_argument('--content-type', default=TYPES_MAP[TYPE_TEXT], type=lambda x: TYPES_MAP[x], help=','.join(TYPES_MAP))
     parser.add_argument('--language', default='ru-RU', help=' ')
     parser.add_argument('--voice', default='May_24000', help=' ')
@@ -93,7 +95,7 @@ def create_parser():
 
 
 def main():
-    parser = create_parser()
+    parser = create_parser([ENCODING_WAV, ENCODING_OPUS, ENCODING_PCM])
 
     synthesize(parser.parse_args(namespace=Arguments()))
 
