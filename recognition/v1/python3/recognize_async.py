@@ -81,9 +81,7 @@ def main():
     parser = create_parser()
 
     parser.add_argument('--output', required=True, default=argparse.SUPPRESS, help='file for results')
-    parser.add_argument('--insight-models', nargs='*', default=[], help=' ')
     Arguments.NOT_RECOGNITION_OPTIONS.update({'output'})
-    Arguments.REPEATED.update({'insight_models'})
 
     recognize_async(parser.parse_args(namespace=Arguments()))
 

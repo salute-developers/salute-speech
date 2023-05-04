@@ -39,6 +39,7 @@ message RecognitionResponse {
   int32 channel = 7;
   SpeakerInfo speaker_info = 8;
   EouReason eou_reason = 9; // what caused the end of this utterance (eou must be true)
+  string insight = 10; // json with insights response - will be filled in the last response
 }
 
 message AsyncRecognizeRequest {
@@ -70,7 +71,8 @@ message RecognitionOptions {
   google.protobuf.Duration max_speech_timeout = 11;
   int32 channels_count = 12;
   SpeakerSeparationOptions speaker_separation_options = 13;
-  repeated string insight_models = 14; // Only for asynchronous requests
+  repeated string insight_models = 14;
+  bool force_cyrillic = 15;
 }
 
 message Hints {

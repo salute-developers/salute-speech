@@ -88,7 +88,7 @@ def recognize(args):
 class Arguments:
     NOT_RECOGNITION_OPTIONS = {'host', 'token', 'file', 'normalized_result', 'emotions_result', 'metadata', 'ca'}
     DURATIONS = {'no_speech_timeout', 'max_speech_timeout', 'eou_timeout'}
-    REPEATED = {'words'}
+    REPEATED = {'words', 'insight_models'}
     HINTS_PREFIX = 'hints_'
     SPEAKER_SEPARATION_PREFIX = 'speaker_separation_options_'
 
@@ -146,6 +146,8 @@ def create_parser():
     parser.add_argument('--speaker-separation-options-enable', action='store_true', help=' ')
     parser.add_argument('--speaker-separation-options-enable-only-main-speaker', action='store_true', help=' ')
     parser.add_argument('--speaker-separation-options-count', default=0, type=int, help=' ')
+    parser.add_argument('--force_cyrillic', action='store_true', help=' ')
+    parser.add_argument('--insight-models', nargs='*', default=[], help=' ')
 
     return parser
 
