@@ -1,0 +1,171 @@
+syntax = "proto3";
+
+package smartspeech.recognition.v2;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "./;protocol";
+option java_package = "TODO";
+
+service SmartSpeech {
+  rpc Recognize (stream RecognitionRequest) returns (stream RecognitionResponse);
+}
+
+message RecognitionRequest {
+  oneof request {
+    RecognitionOptions options = 1;
+    bytes audio_chunk = 2;
+  }
+}
+
+enum EouReason {
+  UNSPECIFIED = 0; // Not an EOU
+  ORGANIC = 1; // Proper EOU
+  NO_SPEECH_TIMEOUT = 2;  // EOU because there was no speech for at least no_speech_timeout seconds
+  MAX_SPEECH_TIMEOUT = 3;	// EOU because there was continuous speech with no breaks for at least max_speech_timeout seconds
+}
+
+message RecognitionResponse {
+  oneof response {
+    Transcription transcription = 1;
+    BackendInfo backend_info = 2;
+    InsightResult insight = 3;
+    VADResult vad = 4;
+  }
+}
+
+message Transcription {
+  int32 channel = 1;
+  repeated Hypothesis results = 2;
+  bool eou = 3;  // marks final result for this utterance
+  EouReason eou_reason = 4; // what caused the end of this utterance (eou must be true)
+  google.protobuf.Duration processed_audio_start = 5;  // starting position of processed audio
+  google.protobuf.Duration processed_audio_end = 6;  // ending position of processed audio
+  Emotions emotions_result = 7;  // may be set on end of utterance
+  SpeakerInfo speaker_info = 8;
+  PersonIdentity person_identity = 9;
+}
+
+message InsightResult {
+  string insight_result = 10;
+}
+
+message VADResult {
+  int32 channel = 1;
+  google.protobuf.Duration processed_audio_time = 2; // VAD time mark in audio
+  google.protobuf.Duration utterance_detection_time = 3; // VAD time since utterance start
+}
+
+message OptionalBool {
+    bool enable = 1;
+}
+
+message RecognitionOptions {
+  enum AudioEncoding {
+    AUDIO_ENCODING_UNSPECIFIED = 0;
+    PCM_S16LE = 1;  // 16-bit signed little-endian (Linear PCM)
+    OPUS = 2;  // mime audio/ogg; codecs=opus
+    MP3 = 3;  // MPEG-1/2 Layer-3
+    FLAC = 4;
+    ALAW = 5;
+    MULAW = 6;
+    G729 = 7;
+  }
+
+  AudioEncoding audio_encoding = 1;
+  int32 sample_rate = 2;  // For PCM_16LE, ALAW, MULAW audio encodings
+  int32 channels_count = 3;
+  string language = 4;  // Language code in RFC-3066 format, i.e.: ru-RU
+  string model = 5;
+  OptionalBool enable_multi_utterance = 6;
+  OptionalBool enable_partial_results = 7;
+  int32 hypotheses_count = 8;
+  google.protobuf.Duration no_speech_timeout = 9;
+  google.protobuf.Duration max_speech_timeout = 10;
+  Hints hints = 11;
+  SpeakerSeparationOptions speaker_separation_options = 12;
+
+  NormalizationOptions normalization_options = 13;
+  repeated string insight_models = 14;
+  OptionalBool enable_vad = 15;
+  OptionalBool custom_ws_flow_control = 16;
+  OptionalBool enable_long_utterances = 17;
+  repeated string truncate_last_punctuation = 18;
+}
+
+message NormalizationOptions {
+    OptionalBool enable = 1;
+    OptionalBool profanity_filter = 2;
+    OptionalBool punctuation = 3;
+    OptionalBool capitalization = 4;
+    OptionalBool question = 5;
+    OptionalBool force_cyrillic = 6;
+}
+
+message Hints {
+  repeated string words = 1;
+  bool enable_letters = 2;
+  google.protobuf.Duration eou_timeout = 3;
+}
+
+message SpeakerSeparationOptions {
+  bool enable = 1;
+  bool enable_only_main_speaker = 2;  // return only main speaker
+  int32 count = 3;  // number of expected speakers
+}
+
+message Hypothesis {
+  message WordAlignment {
+    string word = 1;  // single word
+    google.protobuf.Duration start = 2;  // starting position of the word in audio stream
+    google.protobuf.Duration end = 3;  // ending position of the word in audio stream
+  }
+
+  string text = 1;  // non-normalized text result
+  string normalized_text = 2;  // normalized text result
+  google.protobuf.Duration start = 3;  // hypothesis starting position from current utterance start
+  google.protobuf.Duration end = 4;  // hypothesis final position from current utterance start
+  repeated WordAlignment word_alignments = 5;  // alignments of single words in audio stream
+}
+
+message Emotions {
+  float positive = 1;  // confidence [0.0 - 1.0]
+  float neutral = 2;
+  float negative = 3;
+  float positive_a = 4;
+  float neutral_a = 5;
+  float negative_a = 6;
+  float positive_t = 7;
+  float neutral_t = 8;
+  float negative_t = 9;
+}
+
+message BackendInfo {
+  string model_name = 1;
+  string model_version = 2;
+  string server_version = 3;
+}
+
+message SpeakerInfo {
+  int32 speaker_id = 1;
+  float main_speaker_confidence = 2;  // main speaker feature [0.0 - 1.0]
+}
+
+enum AgeType {                      // age type
+  AGE_NONE = 0;                               // age not requested / not possible to determine
+  CHILD = 1;                                  // child
+  ADULT = 2;                                  // adult
+}
+
+enum GenderType {                   // gender type
+  GENDER_NONE = 0;                            // gender not requested / not possible to determine
+  MALE = 1;                                   // male
+  FEMALE = 2;                                 // female
+}
+
+message PersonIdentity {
+  AgeType age = 1;                               // age status based on model`s age_threshold
+  GenderType gender = 2;                         // gender status based on model`s gender_threshold
+  float age_score = 3;                           // age score from 0.0 to 1.0
+  float gender_score = 4;                        // gender score from 0.0 to 1.0
+}
